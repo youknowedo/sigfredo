@@ -1,0 +1,8 @@
+div:has(canvas){
+
+}
+
+canvas {
+    margin: auto auto;
+    background-color: white;
+}

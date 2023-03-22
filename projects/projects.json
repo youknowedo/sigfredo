@@ -6,9 +6,9 @@
         "course": "Programmering 2"
     },
     {
-        "name": "Mango",
-        "slug": "airport",
+        "name": "Boids",
+        "slug": "boids",
         "description": "huhu",
-        "course": "Programmering 1"
+        "course": "Programmering 2"
     }
 ]
