@@ -10,5 +10,11 @@
         "slug": "boids",
         "description": "huhu",
         "course": "Programmering 2"
+    },
+    {
+        "name": "Dot Product",
+        "slug": "dot",
+        "description": "Experimentation with dot product for the boids projects",
+        "course": "Programmering 2"
     }
 ]
