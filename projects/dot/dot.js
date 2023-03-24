@@ -7,6 +7,11 @@ let attraction = {
     y: 0,
     r: 1,
 };
+let toA = {
+    x: 0,
+    y: 0,
+    r: 1,
+};
 
 var ctx = c.getContext("2d");
 
@@ -19,16 +24,16 @@ window.onkeypress = function (gfg) {
 
     switch (gfg.keyCode) {
         case w:
-            attraction.y -= 1;
+            attraction.y -= 5;
             break;
         case s:
-            attraction.y += 1;
+            attraction.y += 5;
             break;
         case a:
-            attraction.x -= 1;
+            attraction.x -= 5;
             break;
         case d:
-            attraction.x += 1;
+            attraction.x += 5;
             break;
 
         default:
@@ -51,9 +56,9 @@ function draw() {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.beginPath();
 
-    const a = {
-        x: Math.sin((Math.PI / 180) * attraction.r),
-        y: Math.cos((Math.PI / 180) * attraction.r),
+    toA = {
+        x: Math.cos((Math.PI / 180) * attraction.r),
+        y: Math.sin((Math.PI / 180) * attraction.r),
         r: attraction.r,
     };
 
@@ -64,19 +69,19 @@ function draw() {
         let ray = {
             x: Math.sin((Math.PI / 180) * r),
             y: Math.cos((Math.PI / 180) * r),
-            dot:1,
+            dot: 1,
         };
 
-        const dot = ray.x * a.x + ray.y * a.y;
+        const dot = ray.x * toA.x + ray.y * toA.y;
 
         ray.x = ray.x * dot * 100;
         ray.y = ray.y * dot * 100;
-        ray.dot = dot
+        ray.dot = dot;
 
         rays.push(ray);
     }
 
-    ctx.rect(attraction.x, attraction.y, 10, 10);
+    ctx.rect(attraction.x - 5, attraction.y - 5, 10, 10);
     ctx.fill();
 
     // Render agent
@@ -84,15 +89,22 @@ function draw() {
 
     ctx.translate(center.x, center.y);
 
-    ctx.lineWidth = 1;
-    for (const ray of rays) {
-        if (ray.dot > 0)
-        ctx.strokeStyle = "gray";else ctx.strokeStyle = "red";
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(ray.x, ray.y);
-        ctx.stroke();
-    }
+    // ctx.lineWidth = 1;
+    // for (const ray of rays) {
+    //     if (ray.dot > 0) ctx.strokeStyle = "gray";
+    //     else ctx.strokeStyle = "red";
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 0);
+    //     ctx.lineTo(ray.x, ray.y);
+    //     ctx.stroke();
+    // }
+
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "purple";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(attraction.x - center.x, attraction.y - center.y);
+    ctx.stroke();
 
     ctx.restore();
 

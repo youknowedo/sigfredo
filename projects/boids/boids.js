@@ -5,7 +5,7 @@ c.width = window.innerWidth * 0.8;
 let agents = [];
 
 // Generate boids
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 50; i++) {
     agents.push({
         x: Math.random() * c.width,
         y: Math.random() * c.height,
@@ -35,80 +35,85 @@ function draw() {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.beginPath();
 
-    // let newAgents = [];
-    // for (let i = 0; i < agents.length; i++) {
-    const a = agents[0];
+    let newAgents = [];
+    for (let i = 0; i < agents.length; i++) {
+        const a = agents[i];
 
-    let agentIndexNear = [];
-    for (let j = 0; j < agents.length; j++) {
-        const agent = agents[j];
+        let agentIndexNear = [];
+        for (let j = 0; j < agents.length; j++) {
+            const agent = agents[j];
 
-        if (agent == a) continue;
+            if (agent == a) continue;
 
-        const xDistance = a.x - agent.x;
-        const yDistance = a.y - agent.y;
-        const distance = Math.sqrt(
-            xDistance * xDistance + yDistance * yDistance
-        );
+            const xDistance = a.x - agent.x;
+            const yDistance = a.y - agent.y;
+            const distance = Math.sqrt(
+                xDistance * xDistance + yDistance * yDistance
+            );
 
-        if (distance < 40) agentIndexNear.push(j);
-    }
-    console.log(agentIndexNear);
-
-    const numberOfRays = 8;
-    let rays = [];
-    for (let i = 0; i < numberOfRays; i++) {
-        const r = (360 / numberOfRays) * i;
-        const ray = {
-            x: Math.sin((Math.PI / 180) * r) * 20,
-            y: Math.cos((Math.PI / 180) * r) * 20,
-        };
-
-        let dot = 0;
-        for (const agentIndex of agentIndexNear) {
-            const agent = agents[agentIndex];
-            dot +=
-                (ray.x / 20) * ((agent.x - a.x) / 20) +
-                (ray.y / 20) * ((agent.y - a.y) / 20);
+            if (distance < 60) agentIndexNear.push(j);
         }
-        dot /= agentIndexNear.length;
-        console.log(dot);
+        console.log(agentIndexNear);
 
-        if (!dot) {
-            ray.x *= dot;
-            ray.y *= dot;
+        const numberOfRays = 16;
+        let rays = [];
+        for (let i = 0; i < numberOfRays; i++) {
+            const r = (360 / numberOfRays) * i;
+            const ray = {
+                x: Math.sin((Math.PI / 180) * r) * 20,
+                y: Math.cos((Math.PI / 180) * r) * 20,
+                r,
+                dot: 0,
+            };
+
+            for (const agentIndex of agentIndexNear) {
+                const agent = agents[agentIndex];
+                ray.dot +=
+                    (ray.x / 20) * Math.sin((Math.PI / 180) * (agent.r + a.r)) +
+                    (ray.y / 20) * Math.cos((Math.PI / 180) * (agent.r + a.r));
+            }
+            ray.dot /= agentIndexNear.length;
+
+            if (ray.dot > 0) {
+                ray.x = ray.x * ray.dot;
+                ray.y = ray.y * ray.dot;
+            }
+
+            rays.push(ray);
         }
 
-        rays.push(ray);
-    }
+        // Render agent
+        ctx.save();
 
-    // Render agent
-    ctx.save();
+        ctx.translate(a.x, a.y);
+        ctx.rotate(a.r);
 
-    ctx.translate(a.x, a.y);
-    ctx.rotate(a.r);
-
-    ctx.beginPath();
-    ctx.strokeStyle = "green";
-    ctx.lineWidth = 5;
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, 30);
-    ctx.stroke();
-
-    ctx.fill(agent);
-
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "gray";
-    for (const ray of rays) {
         ctx.beginPath();
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 5;
         ctx.moveTo(0, 0);
-        ctx.lineTo(ray.x, ray.y);
+        ctx.lineTo(0, 30);
         ctx.stroke();
+
+        ctx.fill(agent);
+
+        ctx.lineWidth = 1;
+        for (const ray of rays) {
+            if (ray.dot >= 0) ctx.strokeStyle = "gray";
+            else ctx.strokeStyle = "red";
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(ray.x, ray.y);
+            ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.strokeStyle = "blue";
+        ctx.arc(0, 0, 60, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        ctx.restore();
     }
 
-    ctx.restore();
-    // }
-
-    // requestAnimationFrame(draw);
+    //requestAnimationFrame(draw);
 }
 draw();
