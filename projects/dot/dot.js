@@ -50,7 +50,6 @@ window.onkeypress = function (gfg) {
     attraction.r =
         Math.atan(xy != Infinity && xy != -Infinity ? xy : xy * -1) -
         (x > 0 ? 0 : Math.PI);
-    console.log("r " + (180 / Math.PI) * attraction.r);
 };
 
 function draw() {
@@ -66,17 +65,17 @@ function draw() {
     const numberOfRays = 16;
     let rays = [];
     for (let i = 0; i < numberOfRays; i++) {
-        const r = (360 / numberOfRays) * i;
+        const r = ((2 * Math.PI) / numberOfRays) * i;
         let ray = {
-            x: Math.sin((Math.PI / 180) * r),
-            y: Math.cos((Math.PI / 180) * r),
+            x: Math.sin(r),
+            y: Math.cos(r),
             dot: 1,
         };
 
         const dot = ray.x * toA.x + ray.y * toA.y;
 
-        ray.x = ray.x * dot * 100;
-        ray.y = ray.y * dot * 100;
+        ray.x = ray.x * dot * (dot > 0 ? 40 : -20);
+        ray.y = ray.y * dot * (dot > 0 ? 40 : -20);
         ray.dot = dot;
 
         rays.push(ray);
@@ -90,15 +89,15 @@ function draw() {
 
     ctx.translate(center.x, center.y);
 
-    // ctx.lineWidth = 1;
-    // for (const ray of rays) {
-    //     if (ray.dot > 0) ctx.strokeStyle = "gray";
-    //     else ctx.strokeStyle = "red";
-    //     ctx.beginPath();
-    //     ctx.moveTo(0, 0);
-    //     ctx.lineTo(ray.x, ray.y);
-    //     ctx.stroke();
-    // }
+    ctx.lineWidth = 1;
+    for (const ray of rays) {
+        if (ray.dot > 0) ctx.strokeStyle = "gray";
+        else ctx.strokeStyle = "red";
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(ray.x, ray.y);
+        ctx.stroke();
+    }
 
     ctx.lineWidth = 3;
     ctx.strokeStyle = "purple";
