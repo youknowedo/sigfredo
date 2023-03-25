@@ -2,9 +2,13 @@ const c = document.getElementById("canvas");
 const parent = c.parentElement;
 c.width = window.innerWidth * 0.8;
 
+const center = {
+    x: c.width / 2,
+    y: c.height / 2,
+};
 let attraction = {
-    x: 0,
-    y: 0,
+    x: center.x,
+    y: center.y,
     r: 1,
 };
 let toA = {
@@ -20,7 +24,6 @@ window.onkeypress = function (gfg) {
     const a = 97;
     const s = 115;
     const d = 100;
-    console.log("pressed");
 
     switch (gfg.keyCode) {
         case w:
@@ -40,16 +43,14 @@ window.onkeypress = function (gfg) {
             break;
     }
 
-    console.log(attraction);
+    let x = attraction.x - center.x;
+    let y = attraction.y - center.y;
+    const xy = y / x;
 
-    attraction.r = Math.tan(
-        (center.x - attraction.y) / (center.y - attraction.x)
-    );
-};
-
-const center = {
-    x: c.width / 2,
-    y: c.height / 2,
+    attraction.r =
+        Math.atan(xy != Infinity && xy != -Infinity ? xy : xy * -1) -
+        (x > 0 ? 0 : Math.PI);
+    console.log("r " + (180 / Math.PI) * attraction.r);
 };
 
 function draw() {
@@ -57,8 +58,8 @@ function draw() {
     ctx.beginPath();
 
     toA = {
-        x: Math.cos((Math.PI / 180) * attraction.r),
-        y: Math.sin((Math.PI / 180) * attraction.r),
+        x: Math.cos(attraction.r),
+        y: Math.sin(attraction.r),
         r: attraction.r,
     };
 
@@ -104,6 +105,11 @@ function draw() {
     ctx.beginPath();
     ctx.moveTo(0, 0);
     ctx.lineTo(attraction.x - center.x, attraction.y - center.y);
+    ctx.stroke();
+    ctx.strokeStyle = "orange";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(toA.x * 20, toA.y * 20);
     ctx.stroke();
 
     ctx.restore();
