@@ -6,11 +6,14 @@ const center = {
     x: c.width / 2,
     y: c.height / 2,
 };
-let attraction = {
-    x: center.x,
-    y: center.y,
-    r: 1,
-};
+let attractions = [
+    {
+        x: center.x,
+        y: center.y,
+        r: 1,
+    },
+];
+let attractionIndex = 0;
 let toA = {
     x: 0,
     y: 0,
@@ -24,42 +27,55 @@ window.onkeypress = function (gfg) {
     const a = 97;
     const s = 115;
     const d = 100;
+    const space = 32;
 
     switch (gfg.keyCode) {
         case w:
-            attraction.y -= 5;
+            attractions[attractionIndex].y -= 5;
             break;
         case s:
-            attraction.y += 5;
+            attractions[attractionIndex].y += 5;
             break;
         case a:
-            attraction.x -= 5;
+            attractions[attractionIndex].x -= 5;
             break;
         case d:
-            attraction.x += 5;
+            attractions[attractionIndex].x += 5;
+            break;
+        case space:
+            attractions.push({
+                x: center.x,
+                y: center.y,
+                r: 1,
+            });
+            attractionIndex++;
             break;
 
         default:
             break;
     }
 
-    let x = attraction.x - center.x;
-    let y = attraction.y - center.y;
+    let x = attractions[attractionIndex].x - center.x;
+    let y = attractions[attractionIndex].y - center.y;
     const xy = y / x;
 
-    attraction.r =
-        Math.atan(xy != Infinity && xy != -Infinity ? xy : xy * -1) -
-        (x > 0 ? 0 : Math.PI);
+    attractions[attractionIndex].r =
+        Math.atan(isFinite(xy) ? xy : xy * -1) - (x > 0 ? 0 : Math.PI);
 };
 
 function draw() {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.beginPath();
 
+    let medianR = 0;
+    for (const a of attractions) {
+        medianR += a.r;
+    }
+    medianR /= attractions.length;
     toA = {
-        x: Math.cos(attraction.r),
-        y: Math.sin(attraction.r),
-        r: attraction.r,
+        x: Math.cos(medianR),
+        y: Math.sin(medianR),
+        r: medianR,
     };
 
     const numberOfRays = 16;
@@ -72,7 +88,17 @@ function draw() {
             dot: 1,
         };
 
-        const dot = ray.x * toA.x + ray.y * toA.y;
+        let dot = 0;
+        for (const attraction of attractions) {
+            const a = {
+                x: Math.cos(attraction.r),
+                y: Math.sin(attraction.r),
+                r: attraction.r,
+            };
+
+            dot += a.x * ray.x + a.y * ray.y;
+        }
+        dot /= attractions.length;
 
         ray.x = ray.x * dot * (dot > 0 ? 40 : -20);
         ray.y = ray.y * dot * (dot > 0 ? 40 : -20);
@@ -81,8 +107,10 @@ function draw() {
         rays.push(ray);
     }
 
-    ctx.rect(attraction.x - 5, attraction.y - 5, 10, 10);
-    ctx.fill();
+    for (const a of attractions) {
+        ctx.rect(a.x - 5, a.y - 5, 10, 10);
+        ctx.fill();
+    }
 
     // Render agent
     ctx.save();
@@ -100,11 +128,6 @@ function draw() {
     }
 
     ctx.lineWidth = 3;
-    ctx.strokeStyle = "purple";
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(attraction.x - center.x, attraction.y - center.y);
-    ctx.stroke();
     ctx.strokeStyle = "orange";
     ctx.beginPath();
     ctx.moveTo(0, 0);
