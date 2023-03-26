@@ -9,7 +9,7 @@ for (let i = 0; i < 50; i++) {
     agents.push({
         x: Math.random() * c.width,
         y: Math.random() * c.height,
-        r: (Math.PI / 180) * (Math.random() * 360),
+        r: Math.random() * (Math.PI * 2),
     });
 }
 
@@ -53,30 +53,33 @@ function draw() {
 
             if (distance < 60) agentIndexNear.push(j);
         }
-        console.log(agentIndexNear);
 
         const numberOfRays = 16;
         let rays = [];
         for (let i = 0; i < numberOfRays; i++) {
-            const r = (360 / numberOfRays) * i;
+            const r = ((Math.PI * 2) / numberOfRays) * i;
             const ray = {
-                x: Math.sin((Math.PI / 180) * r) * 20,
-                y: Math.cos((Math.PI / 180) * r) * 20,
+                x: Math.cos(r),
+                y: Math.sin(r),
                 r,
                 dot: 0,
             };
 
-            for (const agentIndex of agentIndexNear) {
-                const agent = agents[agentIndex];
-                ray.dot +=
-                    (ray.x / 20) * Math.sin((Math.PI / 180) * (agent.r + a.r)) +
-                    (ray.y / 20) * Math.cos((Math.PI / 180) * (agent.r + a.r));
-            }
-            ray.dot /= agentIndexNear.length;
+            if (agentIndexNear.length) {
+                for (const agentIndex of agentIndexNear) {
+                    const r = agents[agentIndex].r;
+                    const agent = {
+                        x: Math.cos(r),
+                        y: Math.sin(r),
+                        r: r,
+                    };
 
-            if (ray.dot > 0) {
-                ray.x = ray.x * ray.dot;
-                ray.y = ray.y * ray.dot;
+                    ray.dot += agent.x * ray.x + agent.y * ray.y;
+                }
+                ray.dot /= agentIndexNear.length + 1;
+
+                ray.x = ray.x * ray.dot * (ray.dot > 0 ? 40 : -20);
+                ray.y = ray.y * ray.dot * (ray.dot > 0 ? 40 : -20);
             }
 
             rays.push(ray);
@@ -97,10 +100,17 @@ function draw() {
 
         ctx.fill(agent);
 
+        ctx.restore();
+        ctx.save();
+        ctx.translate(a.x, a.y);
         ctx.lineWidth = 1;
+        let largestRay = { dot: 0 };
         for (const ray of rays) {
+            if (ray.dot > largestRay.dot) largestRay = ray;
+
             if (ray.dot >= 0) ctx.strokeStyle = "gray";
             else ctx.strokeStyle = "red";
+
             ctx.beginPath();
             ctx.moveTo(0, 0);
             ctx.lineTo(ray.x, ray.y);
@@ -112,8 +122,21 @@ function draw() {
         ctx.stroke();
 
         ctx.restore();
-    }
 
-    //requestAnimationFrame(draw);
+        const normLargestRay = {
+            x: Math.cos(largestRay.r),
+            y: Math.sin(largestRay.r),
+            r: largestRay.r,
+        };
+        console.log(normLargestRay);
+        newAgents.push({
+            x: a.x + normLargestRay.x,
+            y: a.y + normLargestRay.y,
+            r: normLargestRay.r,
+        });
+    }
+    agents = newAgents;
+
+    requestAnimationFrame(draw);
 }
 draw();
