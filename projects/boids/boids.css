@@ -1,8 +1,9 @@
-div:has(canvas){
-
+#playButton {
+    display: block;
 }
 
 canvas {
+    display: block;
     margin: auto auto;
     background-color: white;
 }

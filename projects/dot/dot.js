@@ -14,11 +14,8 @@ let attractions = [
     },
 ];
 let attractionIndex = 0;
-let toA = {
-    x: 0,
-    y: 0,
-    r: 1,
-};
+let rotation = 0;
+let rays = [];
 
 var ctx = c.getContext("2d");
 
@@ -67,25 +64,15 @@ function draw() {
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.beginPath();
 
-    let medianR = 0;
-    for (const a of attractions) {
-        medianR += a.r;
-    }
-    medianR /= attractions.length;
-    toA = {
-        x: Math.cos(medianR),
-        y: Math.sin(medianR),
-        r: medianR,
-    };
-
+    rays = [];
     const numberOfRays = 16;
-    let rays = [];
     for (let i = 0; i < numberOfRays; i++) {
         const r = ((2 * Math.PI) / numberOfRays) * i;
         let ray = {
             x: Math.sin(r),
             y: Math.cos(r),
             dot: 1,
+            r,
         };
 
         let dot = 0;
@@ -100,8 +87,8 @@ function draw() {
         }
         dot /= attractions.length;
 
-        ray.x = ray.x * dot * (dot > 0 ? 40 : -20);
-        ray.y = ray.y * dot * (dot > 0 ? 40 : -20);
+        ray.x = ray.x * dot;
+        ray.y = ray.y * dot;
         ray.dot = dot;
 
         rays.push(ray);
@@ -117,24 +104,72 @@ function draw() {
 
     ctx.translate(center.x, center.y);
 
+    let largestRay = { dot: 0 };
     ctx.lineWidth = 1;
     for (const ray of rays) {
-        if (ray.dot > 0) ctx.strokeStyle = "gray";
-        else ctx.strokeStyle = "red";
+        if (ray.dot > largestRay.dot) largestRay = ray;
+    }
+    for (const ray of rays) {
+        ray.x /= largestRay.dot;
+        ray.y /= largestRay.dot;
+
+        ctx.lineWidth = 1;
+        if (largestRay == ray) {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "black";
+        } else {
+            if (ray.dot > 0) ctx.strokeStyle = "gray";
+            else ctx.strokeStyle = "red";
+        }
+
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(ray.x, ray.y);
+        ctx.lineTo(
+            ray.x * (ray.dot > 0 ? 40 : -20),
+            ray.y * (ray.dot > 0 ? 40 : -20)
+        );
         ctx.stroke();
+    }
+
+    const distPlus = (largestRay.r - rotation + 2 * Math.PI) % (2 * Math.PI);
+    const distMinus = (rotation - largestRay.r + 2 * Math.PI) % (2 * Math.PI);
+
+    if (document.getElementById("playButton").classList.contains("playing")) {
+        if (distPlus > Math.PI / 180 || distMinus > Math.PI / 180) {
+            if (distMinus < distPlus) rotation -= Math.PI / 180;
+            else rotation += Math.PI / 180;
+        }
+
+        rotation += 2 * Math.PI;
+        rotation %= 2 * Math.PI;
     }
 
     ctx.lineWidth = 3;
     ctx.strokeStyle = "orange";
     ctx.beginPath();
     ctx.moveTo(0, 0);
-    ctx.lineTo(toA.x * 20, toA.y * 20);
+    ctx.lineTo(Math.sin(rotation) * 20, Math.cos(rotation) * 20);
     ctx.stroke();
 
     ctx.restore();
+
+    ctx.font = "30px Arial";
+    ctx.fillText(
+        `rotation: ${(rotation * (180 / Math.PI)).toFixed(2)}deg`,
+        0,
+        30
+    );
+    ctx.fillText(`largest ray r: ${largestRay.r * (180 / Math.PI)}deg`, 0, 60);
+    ctx.fillText(
+        `distPlus: ${(distPlus * (180 / Math.PI)).toFixed(2)}deg`,
+        0,
+        90
+    );
+    ctx.fillText(
+        `distMinus: ${(distMinus * (180 / Math.PI)).toFixed(2)}deg`,
+        0,
+        120
+    );
 
     requestAnimationFrame(draw);
 }
