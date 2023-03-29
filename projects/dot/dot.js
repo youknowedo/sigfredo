@@ -11,6 +11,7 @@ let attractions = [
         x: center.x,
         y: center.y,
         r: 1,
+        a: true,
     },
 ];
 let attractionIndex = 0;
@@ -25,6 +26,7 @@ window.onkeypress = function (gfg) {
     const s = 115;
     const d = 100;
     const space = 32;
+    const q = 113;
 
     switch (gfg.keyCode) {
         case w:
@@ -44,8 +46,12 @@ window.onkeypress = function (gfg) {
                 x: center.x,
                 y: center.y,
                 r: 1,
+                a: true,
             });
             attractionIndex++;
+            break;
+        case q:
+            attractions[attractionIndex].a = !attractions[attractionIndex].a;
             break;
 
         default:
@@ -83,7 +89,10 @@ function draw() {
                 r: attraction.r,
             };
 
-            dot += a.x * ray.x + a.y * ray.y;
+            const newDot = a.x * ray.x + a.y * ray.y;
+
+            if (attraction.a) dot += newDot;
+            else dot -= newDot;
         }
         dot /= attractions.length;
 
@@ -95,6 +104,10 @@ function draw() {
     }
 
     for (const a of attractions) {
+        ctx.beginPath();
+        if (a.a) ctx.fillStyle = "black";
+        else ctx.fillStyle = "red";
+
         ctx.rect(a.x - 5, a.y - 5, 10, 10);
         ctx.fill();
     }
