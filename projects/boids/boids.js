@@ -1,29 +1,93 @@
-const c = document.getElementById("canvas");
-const parent = c.parentElement;
-c.width = window.innerWidth * 0.8;
+// Get html canvas
+const canvas = document.getElementById("canvas");
 
-const center = {
-    x: c.width / 2,
-    y: c.height / 2,
+// Constants
+const nearAgentRadius = 80;
+const closeAgentRadius = 30;
+const wallPadding = 20;
+
+let center = { x: 0, y: 0 };
+let wallBalls = [];
+window.onresize = () => {
+    // Set the width of the canvas to 80% of the screen
+    canvas.width = window.innerWidth * 0.8;
+
+    // Set the center of the canvas
+    center = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+    };
+
+    const numOfHeightBalls = Math.ceil((canvas.height - wallPadding * 2) / 30);
+    const heightSpacing = (canvas.height - wallPadding * 2) / numOfHeightBalls;
+
+    const numOfWidthBalls = Math.ceil((canvas.width - wallPadding * 2) / 30);
+    const widthSpacing = (canvas.width - wallPadding * 2) / numOfWidthBalls;
+
+    wallBalls = [];
+    for (let i = 0; i < numOfHeightBalls; i++) {
+        wallBalls.push(
+            {
+                x: 20,
+                y: heightSpacing * i + 20,
+            },
+            {
+                x: widthSpacing * numOfWidthBalls + 20,
+                y: heightSpacing * i + 20,
+            }
+        );
+    }
+    for (let i = 0; i < numOfWidthBalls; i++) {
+        wallBalls.push(
+            {
+                y: 20,
+                x: widthSpacing * i + 20,
+            },
+            {
+                y: heightSpacing * numOfHeightBalls + 20,
+                x: widthSpacing * i + 20,
+            }
+        );
+    }
 };
+window.onresize();
+
+// Generate agents
 let agents = [];
-for (let i = 0; i < 0; i++) {
+for (let i = 0; i < 1; i++) {
+    // Randomize position and rotation
     agents.push({
-        x: Math.random() * c.width,
-        y: Math.random() * c.height,
+        x: Math.random() * (canvas.width - 60) + 30,
+        y: Math.random() * (canvas.height - 60) + 30,
         r: Math.random() * 2 * Math.PI,
     });
 }
 
-var ctx = c.getContext("2d");
+var ctx = canvas.getContext("2d");
 
 function draw() {
-    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
 
     const newAgents = [];
     for (const a of agents) {
         let newAgent = { ...a };
+
+        let nearbyAgents = [];
+        let closeAgents = [];
+        for (const agent of agents) {
+            const xDistance = agent.x - a.x;
+            const yDistance = agent.y - a.y;
+
+            const distance = Math.sqrt(
+                xDistance * xDistance + yDistance * yDistance
+            );
+            if (distance < nearAgentRadius && agent != a) {
+                nearbyAgents.push(agent);
+
+                if (distance < closeAgentRadius) closeAgents.push(agent);
+            }
+        }
 
         let rays = [];
         const numberOfRays = 16;
@@ -35,31 +99,97 @@ function draw() {
                 dot: 1,
                 r,
             };
+            const forward = {
+                x: Math.cos(a.r),
+                y: Math.sin(a.r),
+            };
 
-            let nearbyAgents = 0;
-            let dot = 0;
-            for (const agent of agents) {
-                const xDistance = agent.x - a.x;
-                const yDistance = agent.y - a.y;
-                if (
-                    Math.sqrt(xDistance * xDistance + yDistance * yDistance) <
-                        60 &&
-                    agent != a
-                ) {
-                    const otherAgent = {
-                        x: Math.cos(agent.r),
-                        y: Math.sin(agent.r),
-                        r: agent.r,
+            let nearby = 1;
+            let dot = forward.x * ray.x + forward.y * ray.y;
+            let medianPosition = { x: 0, y: 0 };
+            for (const agent of nearbyAgents) {
+                const toAgent = {
+                    x: Math.cos(agent.r),
+                    y: Math.sin(agent.r),
+                };
+
+                dot += toAgent.x * ray.x + toAgent.y * ray.y;
+                medianPosition.x += agent.x;
+                medianPosition.y += agent.y;
+                nearby++;
+            }
+            medianPosition.x /= nearby;
+            medianPosition.y /= nearby;
+
+            const xDistanceToMedian = medianPosition.x - a.x;
+            const yDistanceToMedian = medianPosition.y - a.y;
+            const xy = xDistanceToMedian / yDistanceToMedian;
+
+            const toMedianR =
+                Math.atan(isFinite(xy) ? xy : xy * -1) -
+                (xDistanceToMedian > 0 ? 0 : Math.PI);
+            const toMedian = {
+                x: Math.cos(toMedianR),
+                y: Math.sin(toMedianR),
+            };
+            dot += toMedian.x * ray.x + toMedian.y * ray.y;
+
+            for (const closeAgent of closeAgents) {
+                const xDistance = closeAgent.x - a.x;
+                const yDistance = closeAgent.y - a.y;
+                const xy = xDistance / yDistance;
+
+                const r =
+                    Math.atan(isFinite(xy) ? xy : xy * -1) -
+                    (xDistance > 0 ? 0 : Math.PI);
+
+                const distance = Math.sqrt(
+                    xDistance * xDistance + yDistance * yDistance
+                );
+                const toAgent = {
+                    x: Math.cos(r),
+                    y: Math.sin(r),
+                };
+
+                dot -=
+                    (toAgent.x * ray.x + toAgent.y * ray.y) *
+                    ((closeAgentRadius - distance) / closeAgentRadius) *
+                    10;
+
+                nearby++;
+            }
+
+            for (const wall of wallBalls) {
+                const xDistance = wall.x - a.x;
+                const yDistance = wall.y - a.y;
+                const xy = xDistance / yDistance;
+
+                const r =
+                    Math.atan(isFinite(xy) ? xy : xy * -1) -
+                    (xDistance > 0 ? 0 : Math.PI);
+
+                const distance = Math.sqrt(
+                    xDistance * xDistance + yDistance * yDistance
+                );
+                if (distance < nearAgentRadius) {
+                    const w = {
+                        x: Math.cos(r),
+                        y: Math.sin(r),
                     };
 
-                    dot += otherAgent.x * ray.x + otherAgent.y * ray.y;
-                    nearbyAgents++;
+                    dot -=
+                        (w.x * ray.x + w.y * ray.y) *
+                        ((nearAgentRadius - distance) / nearAgentRadius) *
+                        10;
+
+                    nearby++;
                 }
             }
-            dot /= nearbyAgents;
-            newAgent.nearby = nearbyAgents;
 
-            if (nearbyAgents == 0) {
+            if (nearby) dot /= nearby;
+            newAgent.nearby = nearby;
+
+            if (dot == 0) {
                 dot = Math.sin(a.r) * ray.x + Math.cos(a.r) * ray.y;
             }
 
@@ -68,6 +198,13 @@ function draw() {
             ray.dot = dot;
 
             rays.push(ray);
+        }
+
+        for (const ball of wallBalls) {
+            ctx.beginPath();
+            ctx.fillStyle = "red";
+            ctx.arc(ball.x, ball.y, 10, 0, 2 * Math.PI);
+            ctx.fill();
         }
 
         for (let i = 0; i < agents.length; i++) {
@@ -79,12 +216,17 @@ function draw() {
             ctx.rect(agent.x - 5, agent.y - 5, 10, 10);
             ctx.fill();
             ctx.globalCompositeOperation = "destination-over";
+            ctx.fillStyle = "black";
 
-            ctx.beginPath();
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = "blue";
-            ctx.arc(agent.x, agent.y, 60, 0, 2 * Math.PI);
-            ctx.stroke();
+            // ctx.beginPath();
+            // ctx.lineWidth = 1;
+            // ctx.strokeStyle = "blue";
+            // ctx.arc(agent.x, agent.y, nearAgentRadius, 0, 2 * Math.PI);
+            // ctx.stroke();
+            // ctx.beginPath();
+            // ctx.strokeStyle = "red";
+            // ctx.arc(agent.x, agent.y, closeAgentRadius, 0, 2 * Math.PI);
+            // ctx.stroke();
         }
 
         // Render agent
@@ -134,10 +276,14 @@ function draw() {
         if (
             document.getElementById("playButton").classList.contains("playing")
         ) {
-            if (distPlus > Math.PI / 180 || distMinus > Math.PI / 180) {
-                if (distMinus < distPlus) newAgent.r -= Math.PI / 180;
-                else newAgent.r += Math.PI / 180;
+            if (
+                distPlus > (Math.PI / 180) * 5 ||
+                distMinus > (Math.PI / 180) * 5
+            ) {
+                if (distMinus < distPlus) newAgent.r -= (Math.PI / 180) * 5;
+                else newAgent.r += (Math.PI / 180) * 5;
             }
+            newAgent.r += (Math.PI / 180) * (Math.random() * 3 - 1.5);
 
             newAgent.r += 2 * Math.PI;
             newAgent.r %= 2 * Math.PI;
@@ -149,10 +295,10 @@ function draw() {
         newAgents.push({ ...newAgent, largestRay });
     }
     ctx.font = "30px Arial";
-    ctx.fillText(`x: ${agents[0].x}deg`, 0, 30);
-    ctx.fillText(`y: ${agents[0].y}deg`, 0, 60);
-    ctx.fillText(`r: ${agents[0].r * (180 / Math.PI)}deg`, 0, 90);
-    ctx.fillText(`nearby: ${agents[0].nearby}`, 0, 120);
+    ctx.fillText(`x: ${agents[0]?.x}deg`, 45, 60);
+    ctx.fillText(`y: ${agents[0]?.y}deg`, 45, 90);
+    ctx.fillText(`r: ${agents[0]?.r * (180 / Math.PI)}deg`, 45, 120);
+    ctx.fillText(`nearby: ${agents[0]?.nearby}`, 45, 150);
 
     agents = newAgents;
     requestAnimationFrame(draw);

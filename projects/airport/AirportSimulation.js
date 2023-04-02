@@ -1144,7 +1144,7 @@ var Module = (() => {
             }
         } else {
             // Use bundler-friendly `new URL(..., import.meta.url)` pattern; works in browsers too.
-            wasmBinaryFile = new URL("AirportSimulation", import.meta.url).href;
+            wasmBinaryFile = "https://raw.githubusercontent.com/fenwikk/sigfredo/main/projects/airport/AirportSimulation";
         }
 
         function getBinary(file) {
