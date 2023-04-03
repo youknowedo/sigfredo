@@ -1,4 +1,4 @@
-import { blindSpot } from "./boids.js";
+import { acRadius, avoidRadius, blindSpot } from "./boids.js";
 
 export const generateAgents = (
     amountOfAgents,
@@ -14,6 +14,13 @@ export const generateAgents = (
             x: Math.random() * (maxX - minX) + minX,
             y: Math.random() * (maxY - minY) + minY,
             rotation: Math.random() * (2 * Math.PI),
+
+            left: {
+                dot: 0,
+            },
+            right: {
+                dot: 0,
+            },
         });
     }
 
@@ -22,7 +29,7 @@ export const generateAgents = (
 
 export const drawAgent = (ctx, agent, height, width) => {
     ctx.translate(agent.x, agent.y);
-    ctx.rotate(agent.rotation);
+    ctx.rotate(agent.rotation - Math.PI / -2);
 
     ctx.moveTo(-(width / 2), -(height / 2));
 
@@ -38,15 +45,28 @@ export const drawAgent = (ctx, agent, height, width) => {
     if (agent.chosen) {
         ctx.fillStyle = "rgba(122, 122, 122, .2)";
 
-        ctx.beginPath();
-
         ctx.rotate(Math.PI / -2);
+
+        ctx.beginPath();
         ctx.moveTo(0, 0);
         const blindSpotInRadians = 2 * Math.PI * blindSpot;
         ctx.arc(
             0,
             0,
-            60,
+            acRadius,
+            2 * Math.PI + blindSpotInRadians / 2,
+            2 * Math.PI - blindSpotInRadians / 2
+        );
+        ctx.lineTo(0, 0);
+
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(
+            0,
+            0,
+            avoidRadius,
             2 * Math.PI + blindSpotInRadians / 2,
             2 * Math.PI - blindSpotInRadians / 2
         );

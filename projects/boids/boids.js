@@ -11,6 +11,17 @@ export var center = { x: 0, y: 0 };
 const agentHeight = 20;
 const agentWidth = 15;
 export const blindSpot = 0.2;
+export const acRadius = 80;
+export const avoidRadius = 30;
+
+const speed = 1; // Pixels it moves forward each frame
+const avoidanceWeight = 3; // Angle it will turn for avoidance
+const alignWeight = 2; // Angle it will turn for align
+const cohesionWeight = 2; // Angle it will turn for cohesion
+
+const doAvoid = true;
+const doAlign = true;
+const doCohesion = true;
 
 document.getElementById("playButton").onclick = () => {
     playing = !playing;
@@ -32,7 +43,7 @@ window.onresize = () => {
 };
 window.onresize();
 
-let agents = generateAgents(50, canvas.width - 50, canvas.height - 50, 50, 50);
+let agents = generateAgents(200, canvas.width - 50, canvas.height - 50, 50, 50);
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -43,47 +54,173 @@ function draw() {
 
         ctx.fillStyle = agent.chosen ? "blue" : "black";
 
-        if (agent.chosen) {
-            const currentDir = {
-                x: -Math.sin(agent.rotation),
-                y: -Math.cos(agent.rotation),
+        const currentDir = {
+            x: Math.cos(agent.rotation),
+            y: Math.sin(agent.rotation),
+        };
+
+        agent.left = {
+            x: Math.cos(agent.rotation - (Math.PI / 180) * 45),
+            y: Math.sin(agent.rotation - (Math.PI / 180) * 45),
+            dot: 0,
+        };
+        agent.right = {
+            x: Math.cos(agent.rotation + (Math.PI / 180) * 45),
+            y: Math.sin(agent.rotation + (Math.PI / 180) * 45),
+            dot: 0,
+        };
+
+        let inAvoidRadius = 0;
+
+        let alignRotation = 0;
+        let inACRadius = 0;
+
+        let toCohesion = {
+            x: 0,
+            y: 0,
+        };
+
+        for (const otherAgent of agents) {
+            if (agent == otherAgent) continue;
+
+            const distanceX = agent.x - otherAgent.x;
+            const distanceY = agent.y - otherAgent.y;
+            const distance = Math.sqrt(
+                distanceX * distanceX + distanceY * distanceY
+            );
+
+            const toOther = {
+                x: distanceX / distance,
+                y: distanceY / distance,
             };
 
-            for (const otherAgent of agents) {
-                if (agent == otherAgent) continue;
+            const dotToCurrentDir =
+                currentDir.x * toOther.x + currentDir.y * toOther.y;
 
-                const distanceX = otherAgent.x - agent.x;
-                const distanceY = agent.y - otherAgent.y;
-                const distance = Math.sqrt(
-                    distanceX * distanceX + distanceY * distanceY
-                );
+            if (dotToCurrentDir > blindSpot - 1) {
+                if (doAvoid) {
+                    if (distance < avoidRadius) {
+                        agent.left.dot +=
+                            agent.left.x * toOther.x + agent.left.y * toOther.y;
+                        agent.right.dot +=
+                            agent.right.x * toOther.x +
+                            agent.right.y * toOther.y;
+                        inAvoidRadius++;
 
-                const toOther = {
-                    x: distanceX / distance,
-                    y: distanceY / distance,
-                };
+                        if (agent.chosen) {
+                            ctx.beginPath();
 
-                const dotToCurrentDir =
-                    currentDir.x * toOther.x + currentDir.y * toOther.y;
-                if (distance < 60 && dotToCurrentDir > blindSpot - 1) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = "red";
-                    ctx.moveTo(agent.x, agent.y);
-                    ctx.lineTo(otherAgent.x, otherAgent.y);
-                    ctx.stroke();
-                    ctx.strokeStyle = "black";
+                            if (doAlign) ctx.lineWidth = 2;
 
-                    if (agent.chosen)
-                        ctx.globalCompositeOperation = "source-over";
+                            ctx.strokeStyle = "red";
+                            ctx.moveTo(agent.x, agent.y);
+                            ctx.lineTo(otherAgent.x, otherAgent.y);
+                            ctx.stroke();
+
+                            ctx.strokeStyle = "black";
+                            if (doAlign) ctx.lineWidth = 1;
+                        }
+                    }
                 }
+
+                if (doAlign) {
+                    if (distance < acRadius) {
+                        alignRotation += otherAgent.rotation;
+
+                        if (agent.chosen) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = "green";
+                            ctx.moveTo(agent.x, agent.y);
+                            ctx.lineTo(otherAgent.x, otherAgent.y);
+                            ctx.stroke();
+                            ctx.strokeStyle = "black";
+                        }
+                    }
+                }
+
+                if (doCohesion) {
+                    if (distance < acRadius) {
+                        toCohesion.x += otherAgent.x;
+                        toCohesion.y += otherAgent.y;
+                    }
+                }
+
+                if (doAlign || doCohesion) {
+                    if (distance < acRadius) {
+                        inACRadius++;
+                        if (agent.chosen) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = "green";
+                            ctx.moveTo(agent.x, agent.y);
+                            ctx.lineTo(otherAgent.x, otherAgent.y);
+                            ctx.stroke();
+                            ctx.strokeStyle = "black";
+                        }
+                    }
+                }
+
+                ctx.globalCompositeOperation = "source-over";
             }
         }
+
+        agent.left.dot /= inAvoidRadius;
+        agent.right.dot /= inAvoidRadius;
+
+        alignRotation /= inACRadius;
+
+        toCohesion.x /= inACRadius;
+        toCohesion.y /= inACRadius;
 
         drawAgent(ctx, agent, agentHeight, agentWidth);
 
         if (playing) {
-            agent.x = agent.x - Math.sin(agent.rotation) * 2;
-            agent.y = agent.y + Math.cos(agent.rotation) * 2;
+            if (doAvoid) {
+                if (agent.left.dot > agent.right.dot)
+                    agent.rotation += (Math.PI / 180) * avoidanceWeight;
+                else if (agent.left.dot < agent.right.dot)
+                    agent.rotation -= (Math.PI / 180) * avoidanceWeight;
+            }
+
+            if (doAlign) {
+                const distPlus =
+                    (agent.rotation - alignRotation + 2 * Math.PI) %
+                    (2 * Math.PI);
+                const distMinus =
+                    (alignRotation - agent.rotation + 2 * Math.PI) %
+                    (2 * Math.PI);
+
+                if (distPlus > Math.PI / 180 || distMinus > Math.PI / 180) {
+                    if (distMinus < distPlus)
+                        agent.rotation -= (Math.PI / 180) * alignWeight;
+                    else agent.rotation += (Math.PI / 180) * alignWeight;
+                }
+            }
+
+            if (doCohesion) {
+                const distanceX = agent.x - toCohesion.x;
+                const distanceY = agent.y - toCohesion.y;
+                const distance = Math.sqrt(
+                    distanceX * distanceX + distanceY * distanceY
+                );
+
+                const radius = Math.acos(distanceX / distance);
+
+                const distPlus =
+                    (agent.rotation - radius + 2 * Math.PI) % (2 * Math.PI);
+                const distMinus =
+                    (radius - agent.rotation + 2 * Math.PI) % (2 * Math.PI);
+
+                if (distPlus > Math.PI / 180 || distMinus > Math.PI / 180) {
+                    if (distMinus < distPlus)
+                        agent.rotation += (Math.PI / 180) * cohesionWeight;
+                    else agent.rotation -= (Math.PI / 180) * cohesionWeight;
+                }
+            }
+
+            agent.rotation %= 2 * Math.PI;
+
+            agent.x = agent.x - Math.cos(agent.rotation) * speed;
+            agent.y = agent.y - Math.sin(agent.rotation) * speed;
 
             // Teleport to other side if out of view
             if (agent.x < 0 - agentWidth * 1.5)
