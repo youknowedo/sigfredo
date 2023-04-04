@@ -33,8 +33,40 @@
             </div>
 
             <div class="">
-                <button id="playButton">Play</button>
-                <canvas id="canvas" height="500"> </canvas>
+                <div>
+                    <input
+                        type="checkbox"
+                        name="doAvoid"
+                        id="doAvoid"
+                        checked
+                    />
+                    <input
+                        type="range"
+                        name="avoidanceWeight"
+                        id="avoidanceWeight"
+                    />
+                    <input
+                        type="checkbox"
+                        name="doAlign"
+                        id="doAlign"
+                        checked
+                    />
+                    <input type="range" name="alignWeight" id="alignWeight" />
+                    <input
+                        type="checkbox"
+                        name="doCohesion"
+                        id="doCohesion"
+                        checked
+                        on
+                    />
+                    <input
+                        type="range"
+                        name="cohesionWeight"
+                        id="cohesionWeight"
+                    />
+                    <button id="playButton">Play</button>
+                </div>
+                <canvas id="canvas" height="600"> </canvas>
             </div>
         </main>
 

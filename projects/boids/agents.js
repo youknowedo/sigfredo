@@ -1,11 +1,12 @@
-import { acRadius, avoidRadius, blindSpot } from "./boids.js";
+import { acRadius, avoidRadius, blindSpot, groupColors } from "./boids.js";
 
 export const generateAgents = (
     amountOfAgents,
     maxX,
     maxY,
     minX = 0,
-    minY = 0
+    minY = 0,
+    numOfGroups = 1
 ) => {
     const agents = [];
 
@@ -14,6 +15,7 @@ export const generateAgents = (
             x: Math.random() * (maxX - minX) + minX,
             y: Math.random() * (maxY - minY) + minY,
             rotation: Math.random() * (2 * Math.PI),
+            group: Math.ceil(Math.random() * numOfGroups) - 1,
 
             left: {
                 dot: 0,
@@ -24,10 +26,21 @@ export const generateAgents = (
         });
     }
 
-    return agents;
+    const groups = [];
+    for (let i = 0; i < numOfGroups; i++) {
+        groups.push({
+            color: `rgba(${Math.floor(Math.random() * 255)},${Math.floor(
+                Math.random() * 255
+            )},${Math.floor(Math.random() * 255)},1)`,
+        });
+    }
+
+    return { agents, groups };
 };
 
-export const drawAgent = (ctx, agent, height, width) => {
+export const drawAgent = (ctx, agent, height, width, groups) => {
+    ctx.fillStyle = groupColors ? groups[agent.group].color : "black";
+
     ctx.translate(agent.x, agent.y);
     ctx.rotate(agent.rotation - Math.PI / -2);
 

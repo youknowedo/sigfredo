@@ -7,6 +7,11 @@ var ctx = canvas.getContext("2d");
 export let playing = false;
 export var center = { x: 0, y: 0 };
 
+const hasChosen = true;
+const numOfGroups = 4;
+export const groupColors = true;
+const discordOtherGroups = true;
+
 // Agent-variables
 const agentHeight = 20;
 const agentWidth = 15;
@@ -14,14 +19,14 @@ export const blindSpot = 0.2;
 export const acRadius = 80;
 export const avoidRadius = 30;
 
-const speed = 1; // Pixels it moves forward each frame
-const avoidanceWeight = 3; // Angle it will turn for avoidance
-const alignWeight = 2; // Angle it will turn for align
-const cohesionWeight = 2; // Angle it will turn for cohesion
+let speed = 1; // Pixels it moves forward each frame
+let avoidanceWeight = 3; // Angle it will turn for avoidance
+let alignWeight = 1; // Angle it will turn for align
+let cohesionWeight = 1.5; // Angle it will turn for cohesion
 
-const doAvoid = true;
-const doAlign = true;
-const doCohesion = true;
+let doAvoid = true;
+let doAlign = true;
+let doCohesion = true;
 
 document.getElementById("playButton").onclick = () => {
     playing = !playing;
@@ -29,6 +34,31 @@ document.getElementById("playButton").onclick = () => {
     playButton.innerText = playing ? "Pause" : "Play";
 
     if (playing) draw();
+};
+
+document.getElementById("doAvoid").onchange = () => {
+    doAvoid = !doAvoid;
+    document.getElementById("avoidanceWeight").disabled =
+        !document.getElementById("avoidanceWeight").disabled;
+};
+document.getElementById("doAlign").onchange = () => (doAlign = !doAlign);
+document.getElementById("doCohesion").onchange = () =>
+    (doCohesion = !doCohesion);
+
+document.getElementById("avoidanceWeight").value = avoidanceWeight * 20;
+document.getElementById("avoidanceWeight").oninput = (e) => {
+    avoidanceWeight = document.getElementById("avoidanceWeight").value / 20;
+    console.log(avoidanceWeight);
+};
+document.getElementById("alignWeight").value = alignWeight * 20;
+document.getElementById("alignWeight").oninput = (e) => {
+    alignWeight = document.getElementById("alignWeight").value / 20;
+    console.log(alignWeight);
+};
+document.getElementById("cohesionWeight").value = cohesionWeight * 20;
+document.getElementById("cohesionWeight").oninput = (e) => {
+    cohesionWeight = document.getElementById("cohesionWeight").value / 20;
+    console.log(cohesionWeight);
 };
 
 window.onresize = () => {
@@ -43,16 +73,21 @@ window.onresize = () => {
 };
 window.onresize();
 
-let agents = generateAgents(200, canvas.width - 50, canvas.height - 50, 50, 50);
+let { agents, groups } = generateAgents(
+    200,
+    canvas.width - 50,
+    canvas.height - 50,
+    50,
+    50,
+    numOfGroups
+);
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
 
     agents = agents.map((agent, i) => {
-        agent.chosen = i == 0;
-
-        ctx.fillStyle = agent.chosen ? "blue" : "black";
+        agent.chosen = i == 0 && hasChosen;
 
         const currentDir = {
             x: Math.cos(agent.rotation),
@@ -99,7 +134,12 @@ function draw() {
 
             if (dotToCurrentDir > blindSpot - 1) {
                 if (doAvoid) {
-                    if (distance < avoidRadius) {
+                    if (
+                        distance < avoidRadius ||
+                        (discordOtherGroups &&
+                            agent.group != otherAgent.group &&
+                            distance < acRadius)
+                    ) {
                         agent.left.dot +=
                             agent.left.x * toOther.x + agent.left.y * toOther.y;
                         agent.right.dot +=
@@ -124,8 +164,13 @@ function draw() {
                 }
 
                 if (doAlign) {
-                    if (distance < acRadius) {
-                        alignRotation += otherAgent.rotation;
+                    if (
+                        distance < acRadius &&
+                        (agent.group == otherAgent.group || discordOtherGroups)
+                    ) {
+                        if (discordOtherGroups)
+                            alignRotation -= otherAgent.rotation;
+                        else alignRotation += otherAgent.rotation;
 
                         if (agent.chosen) {
                             ctx.beginPath();
@@ -139,14 +184,20 @@ function draw() {
                 }
 
                 if (doCohesion) {
-                    if (distance < acRadius) {
+                    if (
+                        distance < acRadius &&
+                        agent.group == otherAgent.group
+                    ) {
                         toCohesion.x += otherAgent.x;
                         toCohesion.y += otherAgent.y;
                     }
                 }
 
                 if (doAlign || doCohesion) {
-                    if (distance < acRadius) {
+                    if (
+                        distance < acRadius &&
+                        agent.group == otherAgent.group
+                    ) {
                         inACRadius++;
                         if (agent.chosen) {
                             ctx.beginPath();
@@ -171,7 +222,7 @@ function draw() {
         toCohesion.x /= inACRadius;
         toCohesion.y /= inACRadius;
 
-        drawAgent(ctx, agent, agentHeight, agentWidth);
+        drawAgent(ctx, agent, agentHeight, agentWidth, groups);
 
         if (playing) {
             if (doAvoid) {
@@ -191,8 +242,8 @@ function draw() {
 
                 if (distPlus > Math.PI / 180 || distMinus > Math.PI / 180) {
                     if (distMinus < distPlus)
-                        agent.rotation -= (Math.PI / 180) * alignWeight;
-                    else agent.rotation += (Math.PI / 180) * alignWeight;
+                        agent.rotation += (Math.PI / 180) * alignWeight;
+                    else agent.rotation -= (Math.PI / 180) * alignWeight;
                 }
             }
 
