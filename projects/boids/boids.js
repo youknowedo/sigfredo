@@ -20,7 +20,7 @@ export const acRadius = 80;
 export const avoidRadius = 30;
 
 let speed = 1; // Pixels it moves forward each frame
-let avoidanceWeight = 3; // Angle it will turn for avoidance
+let avoidanceWeight = 2.5; // Angle it will turn for avoidance
 let alignWeight = 1; // Angle it will turn for align
 let cohesionWeight = 1.5; // Angle it will turn for cohesion
 
@@ -63,7 +63,7 @@ document.getElementById("cohesionWeight").oninput = (e) => {
 
 window.onresize = () => {
     // Set the width of the canvas to 80% of the screen
-    canvas.width = window.innerWidth * 0.8;
+    canvas.width = window.innerWidth;
 
     // Set the center of the canvas
     center = {
@@ -115,103 +115,147 @@ function draw() {
             y: 0,
         };
 
-        for (const otherAgent of agents) {
-            if (agent == otherAgent) continue;
+        const isOutside =
+            agent.x < 0 ||
+            agent.x > canvas.width ||
+            agent.y < 0 ||
+            agent.y > canvas.height;
+        let duplicateAgent = { ...agent };
+        if (isOutside) {
+            if (agent.x < 0) duplicateAgent.x += canvas.width + acRadius;
+            else if (agent.x > canvas.width)
+                duplicateAgent.x -= canvas.width + acRadius;
 
-            const distanceX = agent.x - otherAgent.x;
-            const distanceY = agent.y - otherAgent.y;
-            const distance = Math.sqrt(
+            if (agent.y < 0) duplicateAgent.y += canvas.height + acRadius;
+            else if (agent.y > canvas.height)
+                duplicateAgent.y -= canvas.height + acRadius;
+        }
+
+        for (const oa of agents) {
+            if (agent == oa) continue;
+
+            let otherAgent = { ...oa };
+
+            let distanceX = agent.x - otherAgent.x;
+            let distanceY = agent.y - otherAgent.y;
+            let distance = Math.sqrt(
                 distanceX * distanceX + distanceY * distanceY
             );
 
-            const toOther = {
+            let toOther = {
                 x: distanceX / distance,
                 y: distanceY / distance,
             };
 
-            const dotToCurrentDir =
+            let dotToCurrentDir =
                 currentDir.x * toOther.x + currentDir.y * toOther.y;
 
-            if (dotToCurrentDir > blindSpot - 1) {
-                if (doAvoid) {
-                    if (
-                        distance < avoidRadius ||
-                        (discordOtherGroups &&
-                            agent.group != otherAgent.group &&
-                            distance < acRadius)
-                    ) {
-                        agent.left.dot +=
-                            agent.left.x * toOther.x + agent.left.y * toOther.y;
-                        agent.right.dot +=
-                            agent.right.x * toOther.x +
-                            agent.right.y * toOther.y;
-                        inAvoidRadius++;
+            let inDuplicatesRange = false;
+            if (dotToCurrentDir <= blindSpot - 1 || distance > acRadius) {
+                if (isOutside) {
+                    distanceX = duplicateAgent.x - otherAgent.x;
+                    distanceY = duplicateAgent.y - otherAgent.y;
+                    distance = Math.sqrt(
+                        distanceX * distanceX + distanceY * distanceY
+                    );
 
-                        if (agent.chosen) {
-                            ctx.beginPath();
+                    toOther = {
+                        x: distanceX / distance,
+                        y: distanceY / distance,
+                    };
 
-                            if (doAlign) ctx.lineWidth = 2;
+                    dotToCurrentDir =
+                        currentDir.x * toOther.x + currentDir.y * toOther.y;
 
-                            ctx.strokeStyle = "red";
-                            ctx.moveTo(agent.x, agent.y);
-                            ctx.lineTo(otherAgent.x, otherAgent.y);
-                            ctx.stroke();
+                    if (dotToCurrentDir <= blindSpot - 1 || distance > acRadius)
+                        continue;
 
-                            ctx.strokeStyle = "black";
-                            if (doAlign) ctx.lineWidth = 1;
-                        }
-                    }
-                }
-
-                if (doAlign) {
-                    if (
-                        distance < acRadius &&
-                        (agent.group == otherAgent.group || discordOtherGroups)
-                    ) {
-                        if (discordOtherGroups)
-                            alignRotation -= otherAgent.rotation;
-                        else alignRotation += otherAgent.rotation;
-
-                        if (agent.chosen) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = "green";
-                            ctx.moveTo(agent.x, agent.y);
-                            ctx.lineTo(otherAgent.x, otherAgent.y);
-                            ctx.stroke();
-                            ctx.strokeStyle = "black";
-                        }
-                    }
-                }
-
-                if (doCohesion) {
-                    if (
-                        distance < acRadius &&
-                        agent.group == otherAgent.group
-                    ) {
-                        toCohesion.x += otherAgent.x;
-                        toCohesion.y += otherAgent.y;
-                    }
-                }
-
-                if (doAlign || doCohesion) {
-                    if (
-                        distance < acRadius &&
-                        agent.group == otherAgent.group
-                    ) {
-                        inACRadius++;
-                        if (agent.chosen) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = "green";
-                            ctx.moveTo(agent.x, agent.y);
-                            ctx.lineTo(otherAgent.x, otherAgent.y);
-                            ctx.stroke();
-                            ctx.strokeStyle = "black";
-                        }
-                    }
-                }
-
-                ctx.globalCompositeOperation = "source-over";
+                    inDuplicatesRange = true;
+                } else continue;
             }
+
+            if (doAvoid) {
+                if (
+                    distance < avoidRadius ||
+                    (discordOtherGroups && agent.group != otherAgent.group)
+                ) {
+                    agent.left.dot +=
+                        agent.left.x * toOther.x + agent.left.y * toOther.y;
+                    agent.right.dot +=
+                        agent.right.x * toOther.x + agent.right.y * toOther.y;
+                    inAvoidRadius++;
+
+                    if (agent.chosen) {
+                        ctx.beginPath();
+
+                        if (doAlign) ctx.lineWidth = 2;
+
+                        ctx.strokeStyle = "red";
+                        ctx.moveTo(
+                            inDuplicatesRange ? duplicateAgent.x : agent.x,
+                            inDuplicatesRange ? duplicateAgent.y : agent.y
+                        );
+                        ctx.lineTo(otherAgent.x, otherAgent.y);
+                        ctx.stroke();
+
+                        ctx.strokeStyle = "black";
+                        if (doAlign) ctx.lineWidth = 1;
+                    }
+                }
+            }
+
+            if (doAlign) {
+                if (agent.group == otherAgent.group || discordOtherGroups) {
+                    if (discordOtherGroups)
+                        alignRotation -= otherAgent.rotation;
+                    else alignRotation += otherAgent.rotation;
+
+                    if (agent.chosen) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = "green";
+                        ctx.moveTo(
+                            inDuplicatesRange ? duplicateAgent.x : agent.x,
+                            inDuplicatesRange ? duplicateAgent.y : agent.y
+                        );
+                        ctx.lineTo(otherAgent.x, otherAgent.y);
+                        ctx.stroke();
+                        ctx.strokeStyle = "black";
+                    }
+                }
+            }
+
+            if (doCohesion) {
+                if (agent.group == otherAgent.group) {
+                    toCohesion.x +=
+                        otherAgent.x +
+                        (isOutside &&
+                            (canvas.width + acRadius) * (agent.x < 0 ? 1 : -1));
+                    toCohesion.y +=
+                        otherAgent.y +
+                        (isOutside &&
+                            (canvas.height + acRadius) *
+                                (agent.y < 0 ? 1 : -1));
+                }
+            }
+
+            if (doAlign || doCohesion) {
+                if (agent.group == otherAgent.group) {
+                    inACRadius++;
+                    if (agent.chosen) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = "green";
+                        ctx.moveTo(
+                            inDuplicatesRange ? duplicateAgent.x : agent.x,
+                            inDuplicatesRange ? duplicateAgent.y : agent.y
+                        );
+                        ctx.lineTo(otherAgent.x, otherAgent.y);
+                        ctx.stroke();
+                        ctx.strokeStyle = "black";
+                    }
+                }
+            }
+
+            ctx.globalCompositeOperation = "source-over";
         }
 
         agent.left.dot /= inAvoidRadius;
@@ -223,6 +267,8 @@ function draw() {
         toCohesion.y /= inACRadius;
 
         drawAgent(ctx, agent, agentHeight, agentWidth, groups);
+        if (isOutside)
+            drawAgent(ctx, duplicateAgent, agentHeight, agentWidth, groups);
 
         if (playing) {
             if (doAvoid) {
@@ -274,15 +320,11 @@ function draw() {
             agent.y = agent.y - Math.sin(agent.rotation) * speed;
 
             // Teleport to other side if out of view
-            if (agent.x < 0 - agentWidth * 1.5)
-                agent.x = canvas.width + agentWidth;
-            else if (agent.x > canvas.width + agentWidth)
-                agent.x = 0 - agentWidth;
+            if (agent.x < 0 - acRadius) agent.x = canvas.width;
+            else if (agent.x > canvas.width + acRadius) agent.x = 0;
 
-            if (agent.y < 0 - agentHeight * 1.5)
-                agent.y = canvas.height + agentHeight;
-            else if (agent.y > canvas.height + agentHeight)
-                agent.y = 0 - agentHeight;
+            if (agent.y < 0 - acRadius) agent.y = canvas.height;
+            else if (agent.y > canvas.height + acRadius) agent.y = 0;
         }
 
         return agent;
