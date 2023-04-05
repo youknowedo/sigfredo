@@ -1,10 +1,4 @@
-import {
-    acRadius,
-    avoidRadius,
-    blindSpot,
-    frontBlindSpot,
-    groupColors,
-} from "./boids.js";
+import { acRadius, avoidRadius, blindSpot, groupColors } from "./boids.js";
 
 export const generateAgents = (
     amountOfAgents,
@@ -69,22 +63,12 @@ export const drawAgent = (ctx, agent, height, width, groups) => {
         ctx.beginPath();
         ctx.moveTo(0, 0);
         const blindSpotInRadians = 2 * Math.PI * blindSpot;
-        const frontBlindSpotInRadians = 2 * Math.PI * frontBlindSpot;
         ctx.arc(
             0,
             0,
             acRadius,
             2 * Math.PI + blindSpotInRadians / 2,
-            Math.PI - frontBlindSpotInRadians / 2
-        );
-        ctx.lineTo(0, 0);
-        ctx.arc(
-            0,
-            0,
-            acRadius,
-            2 * Math.PI - blindSpotInRadians / 2,
-            Math.PI + frontBlindSpotInRadians / 2,
-            true
+            2 * Math.PI - blindSpotInRadians / 2
         );
         ctx.lineTo(0, 0);
 
@@ -97,16 +81,7 @@ export const drawAgent = (ctx, agent, height, width, groups) => {
             0,
             avoidRadius,
             2 * Math.PI + blindSpotInRadians / 2,
-            Math.PI - frontBlindSpotInRadians / 2
-        );
-        ctx.lineTo(0, 0);
-        ctx.arc(
-            0,
-            0,
-            avoidRadius,
-            2 * Math.PI - blindSpotInRadians / 2,
-            Math.PI + frontBlindSpotInRadians / 2,
-            true
+            2 * Math.PI - blindSpotInRadians / 2
         );
         ctx.lineTo(0, 0);
 

@@ -16,7 +16,6 @@ const discordOtherGroups = true;
 const agentHeight = 20;
 const agentWidth = 15;
 export const blindSpot = 0.2;
-export const frontBlindSpot = 0.1;
 export const acRadius = 80;
 export const avoidRadius = 30;
 
@@ -133,10 +132,7 @@ function draw() {
             const dotToCurrentDir =
                 currentDir.x * toOther.x + currentDir.y * toOther.y;
 
-            if (
-                dotToCurrentDir > blindSpot - 1 &&
-                dotToCurrentDir < frontBlindSpot
-            ) {
+            if (dotToCurrentDir > blindSpot - 1) {
                 if (doAvoid) {
                     if (
                         distance < avoidRadius ||
