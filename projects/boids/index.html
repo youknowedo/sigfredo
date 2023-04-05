@@ -32,31 +32,35 @@
                 </div>
             </div>
 
+            <div>
+                <label for="hasChosen">hasChosen</label>
+                <input type="checkbox" name="hasChosen" id="hasChosen" />
+
+                <label for="groupColors">groupColors</label>
+                <input type="checkbox" name="groupColors" id="groupColors" />
+
+                <label for="discordOtherGroups">discordOtherGroups</label>
+                <input
+                    type="checkbox"
+                    name="discordOtherGroups"
+                    id="discordOtherGroups"
+                />
+            </div>
+
             <div class="">
                 <div>
-                    <input
-                        type="checkbox"
-                        name="doAvoid"
-                        id="doAvoid"
-                        checked
-                    />
+                    <input type="checkbox" name="doAvoid" id="doAvoid" />
                     <input
                         type="range"
                         name="avoidanceWeight"
                         id="avoidanceWeight"
                     />
-                    <input
-                        type="checkbox"
-                        name="doAlign"
-                        id="doAlign"
-                        checked
-                    />
+                    <input type="checkbox" name="doAlign" id="doAlign" />
                     <input type="range" name="alignWeight" id="alignWeight" />
                     <input
                         type="checkbox"
                         name="doCohesion"
                         id="doCohesion"
-                        checked
                         on
                     />
                     <input
@@ -66,7 +70,7 @@
                     />
                     <button id="playButton">Play</button>
                 </div>
-                <canvas id="canvas" height="600"> </canvas>
+                <canvas id="canvas"> </canvas>
             </div>
         </main>
 

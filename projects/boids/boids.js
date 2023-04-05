@@ -7,10 +7,11 @@ var ctx = canvas.getContext("2d");
 export let playing = false;
 export var center = { x: 0, y: 0 };
 
-const hasChosen = true;
-const numOfGroups = 4;
-export const groupColors = true;
-const discordOtherGroups = true;
+let hasChosen = true;
+let numOfGroups = 4;
+let numOfAgents = 200;
+export let groupColors = true;
+let discordOtherGroups = true;
 
 // Agent-variables
 const agentHeight = 20;
@@ -36,12 +37,28 @@ document.getElementById("playButton").onclick = () => {
     if (playing) draw();
 };
 
+document.getElementById("hasChosen").checked = hasChosen;
+document.getElementById("hasChosen").onchange = () => {
+    hasChosen = !hasChosen;
+};
+document.getElementById("groupColors").checked = groupColors;
+document.getElementById("groupColors").onchange = () => {
+    groupColors = !groupColors;
+};
+document.getElementById("discordOtherGroups").checked = discordOtherGroups;
+document.getElementById("discordOtherGroups").onchange = () => {
+    discordOtherGroups = !discordOtherGroups;
+};
+
+document.getElementById("doAvoid").checked = doAvoid;
 document.getElementById("doAvoid").onchange = () => {
     doAvoid = !doAvoid;
     document.getElementById("avoidanceWeight").disabled =
         !document.getElementById("avoidanceWeight").disabled;
 };
+document.getElementById("doAlign").checked = doAlign;
 document.getElementById("doAlign").onchange = () => (doAlign = !doAlign);
+document.getElementById("doCohesion").checked = doCohesion;
 document.getElementById("doCohesion").onchange = () =>
     (doCohesion = !doCohesion);
 
@@ -60,10 +77,10 @@ document.getElementById("cohesionWeight").oninput = (e) => {
     cohesionWeight = document.getElementById("cohesionWeight").value / 20;
     console.log(cohesionWeight);
 };
-
-window.onresize = () => {
+const setCanvasSize = () => {
     // Set the width of the canvas to 80% of the screen
     canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     // Set the center of the canvas
     center = {
@@ -71,14 +88,14 @@ window.onresize = () => {
         y: canvas.height / 2,
     };
 };
-window.onresize();
+setCanvasSize();
 
 let { agents, groups } = generateAgents(
-    200,
-    canvas.width - 50,
-    canvas.height - 50,
-    50,
-    50,
+    numOfAgents,
+    canvas.width,
+    canvas.height,
+    0,
+    0,
     numOfGroups
 );
 
@@ -333,3 +350,9 @@ function draw() {
     if (playing) requestAnimationFrame(draw);
 }
 draw();
+
+window.onresize = () => {
+    setCanvasSize();
+
+    if (!playing) draw();
+};
