@@ -1,4 +1,9 @@
-import { drawAgent, generateAgents } from "./agents.js";
+import {
+    createAgent,
+    createAgents,
+    createGroups,
+    drawAgent,
+} from "./agents.js";
 
 const canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
@@ -7,10 +12,10 @@ var ctx = canvas.getContext("2d");
 export let playing = false;
 export var center = { x: 0, y: 0 };
 
-let hasChosen = true;
-let numOfGroups = 4;
-let numOfAgents = 200;
-export let groupColors = true;
+let haveChosen = true;
+let numberOfGroups = 4;
+let numberOfAgents = 200;
+export let haveGroupColors = true;
 let discordOtherGroups = true;
 
 // Agent-variables
@@ -37,13 +42,42 @@ document.getElementById("playButton").onclick = () => {
     if (playing) draw();
 };
 
-document.getElementById("hasChosen").checked = hasChosen;
-document.getElementById("hasChosen").onchange = () => {
-    hasChosen = !hasChosen;
+document.getElementById("numOfAgents").value = numberOfAgents;
+document.getElementById("numOfAgents").onchange = () => {
+    const oldNOA = numberOfAgents;
+    numberOfAgents = document.getElementById("numOfAgents").value;
+
+    if (numberOfAgents < oldNOA)
+        for (let i = 0; i < oldNOA - numberOfAgents; i++) {
+            agents.splice(agents.length - 1, agents.length - 1);
+        }
+    if (numberOfAgents > oldNOA)
+        for (let i = 0; i < numberOfAgents - oldNOA; i++) {
+            const newAgent = createAgent(canvas.width, canvas.height);
+            newAgent.group = Math.ceil(Math.random() * numberOfGroups) - 1;
+            agents.push(newAgent);
+        }
+
+    if (!playing) draw();
 };
-document.getElementById("groupColors").checked = groupColors;
+document.getElementById("numOfGroups").value = numberOfGroups;
+document.getElementById("numOfGroups").onchange = () => {
+    numberOfGroups = document.getElementById("numOfGroups").value;
+
+    const g = createGroups(numberOfGroups, agents);
+    agents = g.agents;
+    groups = g.groups;
+
+    if (!playing) draw();
+};
+
+document.getElementById("hasChosen").checked = haveChosen;
+document.getElementById("hasChosen").onchange = () => {
+    haveChosen = !haveChosen;
+};
+document.getElementById("groupColors").checked = haveGroupColors;
 document.getElementById("groupColors").onchange = () => {
-    groupColors = !groupColors;
+    haveGroupColors = !haveGroupColors;
 };
 document.getElementById("discordOtherGroups").checked = discordOtherGroups;
 document.getElementById("discordOtherGroups").onchange = () => {
@@ -90,13 +124,13 @@ const setCanvasSize = () => {
 };
 setCanvasSize();
 
-let { agents, groups } = generateAgents(
-    numOfAgents,
+let { agents, groups } = createAgents(
+    numberOfAgents,
     canvas.width,
     canvas.height,
     0,
     0,
-    numOfGroups
+    numberOfGroups
 );
 
 function draw() {
@@ -104,7 +138,7 @@ function draw() {
     ctx.beginPath();
 
     agents = agents.map((agent, i) => {
-        agent.chosen = i == 0 && hasChosen;
+        const agentIsChosen = i == 0 && haveChosen;
 
         const currentDir = {
             x: Math.cos(agent.rotation),
@@ -127,7 +161,7 @@ function draw() {
         let alignRotation = 0;
         let inACRadius = 0;
 
-        let toCohesion = {
+        let vectorPointingToCohesion = {
             x: 0,
             y: 0,
         };
@@ -137,63 +171,68 @@ function draw() {
             agent.x > canvas.width ||
             agent.y < 0 ||
             agent.y > canvas.height;
-        let duplicateAgent = { ...agent };
+        let mirroredAgent;
         if (isOutside) {
-            if (agent.x < 0) duplicateAgent.x += canvas.width + acRadius;
+            mirroredAgent = { ...agent };
+            if (agent.x < 0) mirroredAgent.x += canvas.width + acRadius;
             else if (agent.x > canvas.width)
-                duplicateAgent.x -= canvas.width + acRadius;
+                mirroredAgent.x -= canvas.width + acRadius;
 
-            if (agent.y < 0) duplicateAgent.y += canvas.height + acRadius;
+            if (agent.y < 0) mirroredAgent.y += canvas.height + acRadius;
             else if (agent.y > canvas.height)
-                duplicateAgent.y -= canvas.height + acRadius;
+                mirroredAgent.y -= canvas.height + acRadius;
         }
 
-        for (const oa of agents) {
-            if (agent == oa) continue;
-
-            let otherAgent = { ...oa };
+        for (const otherAgent of agents) {
+            if (agent == otherAgent) continue;
 
             let distanceX = agent.x - otherAgent.x;
             let distanceY = agent.y - otherAgent.y;
-            let distance = Math.sqrt(
+            let distanceToOtherAgent = Math.sqrt(
                 distanceX * distanceX + distanceY * distanceY
             );
 
             let toOther = {
-                x: distanceX / distance,
-                y: distanceY / distance,
+                x: distanceX / distanceToOtherAgent,
+                y: distanceY / distanceToOtherAgent,
             };
 
             let dotToCurrentDir =
                 currentDir.x * toOther.x + currentDir.y * toOther.y;
 
-            let inDuplicatesRange = false;
-            if (dotToCurrentDir <= blindSpot - 1 || distance > acRadius) {
+            let inMirroredAgentsRange = false;
+            if (
+                dotToCurrentDir <= blindSpot - 1 ||
+                distanceToOtherAgent > acRadius
+            ) {
                 if (isOutside) {
-                    distanceX = duplicateAgent.x - otherAgent.x;
-                    distanceY = duplicateAgent.y - otherAgent.y;
-                    distance = Math.sqrt(
+                    distanceX = mirroredAgent.x - otherAgent.x;
+                    distanceY = mirroredAgent.y - otherAgent.y;
+                    distanceToOtherAgent = Math.sqrt(
                         distanceX * distanceX + distanceY * distanceY
                     );
 
                     toOther = {
-                        x: distanceX / distance,
-                        y: distanceY / distance,
+                        x: distanceX / distanceToOtherAgent,
+                        y: distanceY / distanceToOtherAgent,
                     };
 
                     dotToCurrentDir =
                         currentDir.x * toOther.x + currentDir.y * toOther.y;
 
-                    if (dotToCurrentDir <= blindSpot - 1 || distance > acRadius)
+                    if (
+                        dotToCurrentDir <= blindSpot - 1 ||
+                        distanceToOtherAgent > acRadius
+                    )
                         continue;
 
-                    inDuplicatesRange = true;
+                    inMirroredAgentsRange = true;
                 } else continue;
             }
 
             if (doAvoid) {
                 if (
-                    distance < avoidRadius ||
+                    distanceToOtherAgent < avoidRadius ||
                     (discordOtherGroups && agent.group != otherAgent.group)
                 ) {
                     agent.left.dot +=
@@ -202,15 +241,15 @@ function draw() {
                         agent.right.x * toOther.x + agent.right.y * toOther.y;
                     inAvoidRadius++;
 
-                    if (agent.chosen) {
+                    if (agentIsChosen) {
                         ctx.beginPath();
 
                         if (doAlign) ctx.lineWidth = 2;
 
                         ctx.strokeStyle = "red";
                         ctx.moveTo(
-                            inDuplicatesRange ? duplicateAgent.x : agent.x,
-                            inDuplicatesRange ? duplicateAgent.y : agent.y
+                            inMirroredAgentsRange ? mirroredAgent.x : agent.x,
+                            inMirroredAgentsRange ? mirroredAgent.y : agent.y
                         );
                         ctx.lineTo(otherAgent.x, otherAgent.y);
                         ctx.stroke();
@@ -223,16 +262,16 @@ function draw() {
 
             if (doAlign) {
                 if (agent.group == otherAgent.group || discordOtherGroups) {
-                    if (discordOtherGroups)
+                    if (agent.group != otherAgent.group)
                         alignRotation -= otherAgent.rotation;
                     else alignRotation += otherAgent.rotation;
 
-                    if (agent.chosen) {
+                    if (agentIsChosen) {
                         ctx.beginPath();
                         ctx.strokeStyle = "green";
                         ctx.moveTo(
-                            inDuplicatesRange ? duplicateAgent.x : agent.x,
-                            inDuplicatesRange ? duplicateAgent.y : agent.y
+                            inMirroredAgentsRange ? mirroredAgent.x : agent.x,
+                            inMirroredAgentsRange ? mirroredAgent.y : agent.y
                         );
                         ctx.lineTo(otherAgent.x, otherAgent.y);
                         ctx.stroke();
@@ -243,27 +282,32 @@ function draw() {
 
             if (doCohesion) {
                 if (agent.group == otherAgent.group) {
-                    toCohesion.x +=
-                        otherAgent.x +
-                        (isOutside &&
-                            (canvas.width + acRadius) * (agent.x < 0 ? 1 : -1));
-                    toCohesion.y +=
-                        otherAgent.y +
-                        (isOutside &&
-                            (canvas.height + acRadius) *
-                                (agent.y < 0 ? 1 : -1));
+                    const positionComparedToAgent = {
+                        x: otherAgent.x,
+                        y: otherAgent.y,
+                    };
+
+                    if (inMirroredAgentsRange) {
+                        positionComparedToAgent.x +=
+                            (canvas.width + acRadius) * (agent.x < 0 ? 1 : -1);
+                        positionComparedToAgent.y +=
+                            (canvas.height + acRadius) * (agent.y < 0 ? 1 : -1);
+                    }
+
+                    vectorPointingToCohesion.x += positionComparedToAgent.x;
+                    vectorPointingToCohesion.y += positionComparedToAgent.y;
                 }
             }
 
             if (doAlign || doCohesion) {
                 if (agent.group == otherAgent.group) {
                     inACRadius++;
-                    if (agent.chosen) {
+                    if (agentIsChosen) {
                         ctx.beginPath();
                         ctx.strokeStyle = "green";
                         ctx.moveTo(
-                            inDuplicatesRange ? duplicateAgent.x : agent.x,
-                            inDuplicatesRange ? duplicateAgent.y : agent.y
+                            inMirroredAgentsRange ? mirroredAgent.x : agent.x,
+                            inMirroredAgentsRange ? mirroredAgent.y : agent.y
                         );
                         ctx.lineTo(otherAgent.x, otherAgent.y);
                         ctx.stroke();
@@ -280,12 +324,12 @@ function draw() {
 
         alignRotation /= inACRadius;
 
-        toCohesion.x /= inACRadius;
-        toCohesion.y /= inACRadius;
+        vectorPointingToCohesion.x /= inACRadius;
+        vectorPointingToCohesion.y /= inACRadius;
 
         drawAgent(ctx, agent, agentHeight, agentWidth, groups);
         if (isOutside)
-            drawAgent(ctx, duplicateAgent, agentHeight, agentWidth, groups);
+            drawAgent(ctx, mirroredAgent, agentHeight, agentWidth, groups);
 
         if (playing) {
             if (doAvoid) {
@@ -311,13 +355,13 @@ function draw() {
             }
 
             if (doCohesion) {
-                const distanceX = agent.x - toCohesion.x;
-                const distanceY = agent.y - toCohesion.y;
-                const distance = Math.sqrt(
+                const distanceX = agent.x - vectorPointingToCohesion.x;
+                const distanceY = agent.y - vectorPointingToCohesion.y;
+                const distanceToOtherAgent = Math.sqrt(
                     distanceX * distanceX + distanceY * distanceY
                 );
 
-                const radius = Math.acos(distanceX / distance);
+                const radius = Math.acos(distanceX / distanceToOtherAgent);
 
                 const distPlus =
                     (agent.rotation - radius + 2 * Math.PI) % (2 * Math.PI);
