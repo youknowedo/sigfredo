@@ -96,7 +96,7 @@
 				{#if names}
 					{#each Array(Math.ceil((animate ? window.innerHeight : names.clientHeight) / 64) + 1).keys() as row}
 						<div class={row % 2 ? 'left' : 'right'}>
-							{#each Array(Math.ceil(innerWidth / 1000) + 1) as _}
+							{#each Array(Math.ceil(innerWidth / 1000) + 2) as _}
 								<span class="shrikhand">sigfrid wade filip mårtensson{' '}</span>
 							{/each}
 						</div>
