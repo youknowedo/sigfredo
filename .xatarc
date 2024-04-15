@@ -1,6 +1,6 @@
 {
   "databaseURL": "https://Sigfredo-s-workspace-ac2fvu.eu-central-1.xata.sh/db/sigfredo",
   "codegen": {
-    "output": "src/lib/db/xata.ts"
+    "output": "src/lib/server/db/xata.ts"
   }
 }

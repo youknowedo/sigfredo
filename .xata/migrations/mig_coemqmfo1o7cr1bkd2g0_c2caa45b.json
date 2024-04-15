@@ -1,0 +1,16 @@
+{
+  "id": "mig_coemqmfo1o7cr1bkd2g0",
+  "parentID": "mig_coemqk00j6r1cfost3o0",
+  "checksum": "1:c2caa45b1d343b92eef39480908588104b973cc87b761923afce3317a75d6343",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "hashed_password",
+          "type": "string"
+        },
+        "table": "user"
+      }
+    }
+  ]
+}

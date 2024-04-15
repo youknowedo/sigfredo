@@ -6,7 +6,7 @@ const tables = [
 	{
 		name: 'user',
 		columns: [
-			{ name: 'username', type: 'string' },
+			{ name: 'username', type: 'string', unique: true },
 			{ name: 'hashed_password', type: 'string' }
 		]
 	},

@@ -1,0 +1,19 @@
+{
+  "id": "mig_coem69fo1o7cr1bkd24g",
+  "parentID": "mig_coem5vvo1o7cr1bkd23g",
+  "checksum": "1:c8f81e3ffe3ef8a984821c1f3e21285ebb52f51f21868ac871c65ed494282259",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "user_id",
+          "type": "link",
+          "link": {
+            "table": "user"
+          }
+        },
+        "table": "session"
+      }
+    }
+  ]
+}
