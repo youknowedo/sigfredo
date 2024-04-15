@@ -29,8 +29,6 @@ export const actions: Actions = {
 			});
 		}
 
-		console.log('event', event);
-
 		const userId = generateId(15);
 		const hashedPassword = await new Argon2id().hash(password);
 
@@ -51,6 +49,6 @@ export const actions: Actions = {
 			...sessionCookie.attributes
 		});
 
-		redirect(302, '/');
+		redirect(302, '/kader');
 	}
 };

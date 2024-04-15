@@ -18,14 +18,14 @@ const xataKyselyAdapter: Adapter = {
 			.selectAll()
 			.where('id', '=', sessionId)
 			.executeTakeFirst();
-		if (!session) throw new Error('Session not found');
+		if (!session) return [null, null];
 
 		const user = await db
 			.selectFrom('user')
 			.selectAll()
-			.where('id', '=', session.id)
+			.where('id', '=', `${session.user_id}`)
 			.executeTakeFirst();
-		if (!user) throw new Error('User not found');
+		if (!user) return [null, null];
 
 		const dbSession: DatabaseSession = {
 			id: session.id,
@@ -68,7 +68,7 @@ const xataKyselyAdapter: Adapter = {
 	},
 	updateSessionExpiration: async (sessionId, expiresAt) => {
 		db.updateTable('session')
-			.set('expires_at', expiresAt)
+			.set({ expires_at: expiresAt })
 			.where('id', '=', sessionId)
 			.executeTakeFirst();
 	}
