@@ -36,7 +36,7 @@ export type DatabaseSchema = {
 const DatabaseClient = buildClient();
 
 const defaultOptions = {
-	databaseURL: 'https://Sigfredo-s-workspace-ac2fvu.eu-central-1.xata.sh/db/sigfredo'
+	databaseURL: 'https://Sigfredo-ac2fvu.eu-central-1.xata.sh/db/sigfredo'
 };
 
 export class XataClient extends DatabaseClient<DatabaseSchema> {
