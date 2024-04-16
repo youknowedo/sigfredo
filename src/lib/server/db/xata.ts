@@ -16,6 +16,10 @@ const tables = [
 			{ name: 'expires_at', type: 'datetime' },
 			{ name: 'user_id', type: 'string' }
 		]
+	},
+	{
+		name: 'user_secret',
+		columns: [{ name: 'kader_qr', type: 'string', unique: true }]
 	}
 ] as const;
 
@@ -28,9 +32,13 @@ export type UserRecord = User & XataRecord;
 export type Session = InferredTypes['session'];
 export type SessionRecord = Session & XataRecord;
 
+export type UserSecret = InferredTypes['user_secret'];
+export type UserSecretRecord = UserSecret & XataRecord;
+
 export type DatabaseSchema = {
 	user: UserRecord;
 	session: SessionRecord;
+	user_secret: UserSecretRecord;
 };
 
 const DatabaseClient = buildClient();
