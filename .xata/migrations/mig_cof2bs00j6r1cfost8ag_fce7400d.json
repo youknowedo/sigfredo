@@ -1,0 +1,13 @@
+{
+  "id": "mig_cof2bs00j6r1cfost8ag",
+  "parentID": "mig_cof2b4o0j6r1cfost89g",
+  "checksum": "1:fce7400d830b15dcc59a18e8e6451cee1a896527dbd460d47872684550c68fed",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "kader_qr",
+        "table": "user_secret"
+      }
+    }
+  ]
+}

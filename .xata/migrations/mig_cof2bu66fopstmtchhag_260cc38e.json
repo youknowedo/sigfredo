@@ -1,0 +1,17 @@
+{
+  "id": "mig_cof2bu66fopstmtchhag",
+  "parentID": "mig_cof2bs00j6r1cfost8ag",
+  "checksum": "1:260cc38ef111d3abaf660dde806c233f346c73ffd5d987d3fe06c4e1aeb352d1",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "kader_qr",
+          "type": "string",
+          "unique": true
+        },
+        "table": "user_secret"
+      }
+    }
+  ]
+}
