@@ -128,7 +128,7 @@
 					{#if typeof experience.points === 'string'}
 						<p>{experience.points}</p>
 					{:else}
-						<ul class="pl-5 list-disc list-outside [&_ul]:list-[revert]">
+						<ul class="list-outside list-disc pl-5 [&_ul]:list-[revert]">
 							{#each experience.points as point}
 								<Point {point} />
 							{/each}
@@ -162,7 +162,7 @@
 					{#if typeof education.points === 'string'}
 						<p>{education.points}</p>
 					{:else}
-						<ul class="pl-5 list-disc list-outside [&_ul]:list-[revert]">
+						<ul class="list-outside list-disc pl-5 [&_ul]:list-[revert]">
 							{#each education.points as point}
 								<Point {point} />
 							{/each}

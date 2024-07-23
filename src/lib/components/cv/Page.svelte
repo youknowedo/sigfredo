@@ -2,18 +2,18 @@
 	export let photo: string | null = '/cv/basket.jpg';
 </script>
 
-<div class="bg-white block my-[0.25cm] mx-auto relative w-[21cm] h-[29.7cm] font-default">
-	<div class="grid grid-cols-[1fr,3fr] h-full p-[2.5cm] gap-16">
+<div class="relative mx-auto my-[0.25cm] block h-[29.7cm] w-[21cm] bg-white font-default">
+	<div class="grid h-full grid-cols-[1fr,3fr] gap-16 p-[2.5cm]">
 		<div class="flex flex-col gap-8">
 			{#if photo}
 				<img class="-mb-4 rounded-full" src={photo} alt="Filip Mårtensson" />
 			{/if}
 			<div class="flex flex-col items-center">
-				<h1 class="!font-black leading-none w-fit text-[2.2rem]">Sigfrid</h1>
-				<div class="bg-black w-full py-1.5 text-white flex justify-center my-1">
-					<h3 class="!font-black leading-none w-fit text-[0.75rem] tracking-wider">Wade Filip</h3>
+				<h1 class="w-fit text-[2.2rem] !font-black leading-none">Sigfrid</h1>
+				<div class="my-1 flex w-full justify-center bg-black py-1.5 text-white">
+					<h3 class="w-fit text-[0.75rem] !font-black leading-none tracking-wider">Wade Filip</h3>
 				</div>
-				<h2 class="!font-black leading-none w-fit text-[1.22rem]">Mårtensson</h2>
+				<h2 class="w-fit text-[1.22rem] !font-black leading-none">Mårtensson</h2>
 			</div>
 
 			<div class="w-20 h-1 bg-black" />
@@ -42,7 +42,7 @@
 	h1,
 	h2,
 	h3 {
-		@apply uppercase font-bold;
+		@apply font-bold uppercase;
 	}
 
 	@page {
