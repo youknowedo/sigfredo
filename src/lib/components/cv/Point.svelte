@@ -10,7 +10,7 @@
 	<ul class="pl-4">
 		{#each point as p}
 			{#if typeof p === 'string'}
-				<li>{p}</li>
+				<li>{@html p}</li>
 			{:else}
 				<svelte:self {p} />
 			{/if}

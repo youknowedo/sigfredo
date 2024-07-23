@@ -116,10 +116,13 @@
 			<div class="mb-4 text-sm">
 				<div class="flex justify-between">
 					<h5 class="font-bold">
-						{experience.title} - {experience.company} | {experience.location}
+						{experience.title} <br />
 					</h5>
 					<h6 class="italic text-nowrap">{experience.start} - {experience.end}</h6>
 				</div>
+				<h6 class="font-bold">
+					{experience.company} | {experience.location}
+				</h6>
 
 				<div class="">
 					{#if typeof experience.points === 'string'}

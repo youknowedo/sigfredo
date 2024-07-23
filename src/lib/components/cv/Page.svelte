@@ -3,10 +3,10 @@
 </script>
 
 <div class="bg-white block my-[0.25cm] mx-auto relative w-[21cm] h-[29.7cm]">
-	<div class="grid grid-cols-[1fr,4fr] h-full p-[2.5cm] gap-12">
-		<div class="font-default flex flex-col gap-8">
+	<div class="grid grid-cols-[1fr,3fr] h-full p-[2.5cm] gap-16">
+		<div class="flex flex-col gap-8 font-default">
 			{#if photo}
-				<img class="rounded-full -mb-4" src={photo} alt="Filip Mårtensson" />
+				<img class="-mb-4 rounded-full" src={photo} alt="Filip Mårtensson" />
 			{/if}
 			<div class="flex flex-col items-center">
 				<h1 class="!font-black leading-none w-fit text-[2.2rem]">Sigfrid</h1>
@@ -16,23 +16,23 @@
 				<h2 class="!font-black leading-none w-fit text-[1.22rem]">Mårtensson</h2>
 			</div>
 
-			<div class="bg-black h-1 w-20" />
+			<div class="w-20 h-1 bg-black" />
 
-			<div class="leading-tight font-bold flex flex-col gap-4 text-sm">
+			<div class="flex flex-col gap-4 text-sm font-bold leading-tight">
 				<p>
 					Humlegången 11, <br />
 					449 33 Nödinge
 				</p>
 
-				<div class="text-edo flex flex-col gap-2">
-					<p>/in/sigfridwade</p>
-					<p>hello@sigfredo.fun</p>
-					<p>+46 (0)70 304 80 64</p>
+				<div class="flex flex-col gap-2 text-edo">
+					<a href="https://www.linkedin.com/in/sigfridwade/">/in/sigfridwade</a>
+					<a href="mailto:hello@sigfredo.fun">hello@sigfredo.fun</a>
+					<a href="tel:+46703048064">+46 (0)70 304 80 64</a>
 				</div>
 			</div>
 		</div>
 
-		<div class="overflow-hidden h-full">
+		<div class="h-full overflow-hidden">
 			<slot />
 		</div>
 	</div>
