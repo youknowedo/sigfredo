@@ -2,23 +2,19 @@
 	import Page from './Page.svelte';
 
 	export let recipient = 'John Doe';
-	export let adress = '123 Fake Street<br/>123 45 Göteborg';
-	export let company = 'Macforum';
+	export let email = 'john.doe@example.com';
+	export let company = 'Example Ltd.';
 	export let photo: string | null = '/cv/basket.jpg';
-	export let letter =
-		'Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, alias animi ratione vitae a ipsa illo deserunt voluptatum quo maxime natus excepturi dicta. Eius at eligendi, quo fugit voluptates quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, alias animi ratione vitae a ipsa illo deserunt voluptatum quo maxime natus excepturi dicta. Eius at eligendi, quo fugit voluptates quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, alias animi ratione vitae a ipsa illo deserunt voluptatum quo maxime natus excepturi dicta. Eius at eligendi, quo fugit voluptates quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, alias animi ratione vitae a ipsa illo deserunt voluptatum quo maxime natus excepturi dicta. Eius at eligendi, quo fugit voluptates quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, alias animi ratione vitae a ipsa illo deserunt voluptatum quo maxime natus excepturi dicta. Eius at eligendi, quo fugit voluptates quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, alias animi ratione vitae a ipsa illo deserunt voluptatum quo maxime natus excepturi dicta. Eius at eligendi, quo fugit voluptates quibusdam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, alias animi ratione vitae a ipsa illo deserunt voluptatum quo maxime natus excepturi dicta. Eius at eligendi, quo fugit voluptates quibusdam.';
 </script>
 
 <Page {photo}>
-	<div class="text-sm">
-		<p class="font-bold">{recipient}</p>
+	<div class="text-sm leading-tight">
+		<p class="font-black">{recipient}</p>
 		<p>{company}</p>
-		<p>{@html adress}</p>
+		<p class="font-bold text-edo">{@html email}</p>
 
 		<br />
 
-		<p>
-			{letter}
-		</p>
+		<slot />
 	</div>
 </Page>
