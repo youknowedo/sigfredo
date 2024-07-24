@@ -36,7 +36,7 @@
 			end: "dec '23",
 			points: [
 				'Erfarenhet av hur småföretag i mjukvaruutvecklingsbranschen fungerar',
-				'Erfarenhet av att använda Macs samt XCode i en företagsmiljö'
+				'Erfarenhet av att använda Macs samt Xcode i en företagsmiljö'
 			]
 		},
 		{
@@ -46,7 +46,7 @@
 			start: "jan '20",
 			end: "jun '23",
 			points: [
-				'Tog laget från tredje högsta distriksserien till distriktsfinal genom att teambuilding samt bra kommunikation med spelarna'
+				'Tog laget från tredje högsta distriktsserien till distriktsfinal genom att teambuilding samt bra kommunikation med spelarna'
 			]
 		}
 	]}
@@ -64,7 +64,7 @@
 				['Koppling av kretsar', 'Förståelse om lågnivåkomponenter'],
 				'Programmering 2 (PRRPRR02)',
 				[
-					'Användning av XCode och Swift',
+					'Användning av Xcode och Swift',
 					'Skapande av iOS-applikationer',
 					'Skapande av webbapplikationer'
 				]
