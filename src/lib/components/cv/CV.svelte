@@ -96,13 +96,12 @@
 	};
 
 	export let lang: 'sv' | 'en' = 'sv';
-	export let photo: string | null = '/cv/basket.jpg';
 	export let experiences: Experience[] = defaults.experiences;
 	export let educations: Education[] = defaults.educations;
 	export let skills: Skill[] = defaults.skills;
 </script>
 
-<Page {photo}>
+<Page>
 	<div>
 		<h4>
 			{#if lang === 'sv'}
@@ -118,7 +117,7 @@
 					<h5 class="font-bold">
 						{experience.title} <br />
 					</h5>
-					<h6 class="italic text-nowrap">{experience.start} - {experience.end}</h6>
+					<h6 class="text-nowrap italic">{experience.start} - {experience.end}</h6>
 				</div>
 				<h6 class="font-bold">
 					{experience.company} | {experience.location}
@@ -152,7 +151,7 @@
 					<h5 class="font-bold">
 						{education.degree} <br />
 					</h5>
-					<h6 class="italic text-nowrap">{education.start} - {education.end}</h6>
+					<h6 class="text-nowrap italic">{education.start} - {education.end}</h6>
 				</div>
 				<h6 class="font-bold">
 					{education.school} | {education.location}
