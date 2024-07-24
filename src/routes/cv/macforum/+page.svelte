@@ -61,7 +61,13 @@
 				'Entreprenörskap (ENTENR0)',
 				['Undervisning om sälj och säljtekniker'],
 				'Elektronik och mikrodatorteknik (ELEELR0)',
-				['Koppling av kretsar', 'Förståelse om lågnivåkomponenter']
+				['Koppling av kretsar', 'Förståelse om lågnivåkomponenter'],
+				'Programmering 2 (PRRPRR02)',
+				[
+					'Användning av XCode och Swift',
+					'Skapande av iOS-applikationer',
+					'Skapande av webbapplikationer'
+				]
 			]
 		}
 	]}
