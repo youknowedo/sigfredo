@@ -11,7 +11,7 @@
 	<div class="text-sm leading-tight">
 		<p class="font-black">{recipient}</p>
 		<p>{company}</p>
-		<p class="font-bold text-edo">{@html email}</p>
+		<a href="mailto:{email}" class="block font-bold text-edo">{email}</a>
 
 		<br />
 

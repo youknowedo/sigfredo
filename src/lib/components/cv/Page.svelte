@@ -16,7 +16,7 @@
 				<h2 class="w-fit text-[1.22rem] !font-black leading-none">Mårtensson</h2>
 			</div>
 
-			<div class="w-20 h-1 bg-black" />
+			<div class="h-1 w-20 bg-black" />
 
 			<div class="flex flex-col gap-4 text-sm font-bold leading-tight">
 				<p>

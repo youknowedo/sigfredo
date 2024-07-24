@@ -89,4 +89,22 @@
 	]}
 />
 
-<CL recipient="Oscar Björnlod" company="Macforum" email="oscar.bjornlod@macforum.se">hello</CL>
+<CL recipient="Oscar Björnlod" company="Macforum" email="oscar.bjornlod@macforum.se">
+	Hej Oscar!
+	<br /> <br />
+	Alla säger att alla instegsjobb inom detaljhandelsbranschen är likadana. Dock har jag en annan uppfattning.
+	Vem som helst kan sälja godis till ett barn, men det kräver ett speciellt intresse och viss kunskap
+	att få Android-användaren att testa en iPhone, eller Windows-användaren att köpa sin första Mac.
+	<br /> <br />
+	I toppen av mitt CV ser ni att jag har haft tidigare erfarenheter inom B2C sälj och kundrelationer,
+	samt har jag erfarenhet av småföretagande och deras behov i olika branscher. Detta kan vara till stor
+	fördel i B2B sälj, då jag lättare kan resonera med kunden och förstå deras behov.
+	<br /> <br />
+	Jag välkomnar möjligheten att prata med er om du känner att jag skulle vara en stark kandidat för denna
+	eller någon annan position i din organisation. Utöver min erfarenhet i sälj är jag även mycket teknisk
+	kunnig med erfarenheter i elektronik samt webbutveckling.
+	<br /> <br />
+	Med vänliga hälsningar,
+	<br />
+	Sigfrid Wade Filip Mårtensson
+</CL>
