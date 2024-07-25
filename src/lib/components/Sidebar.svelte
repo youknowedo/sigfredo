@@ -4,7 +4,9 @@
 
 <div class="flex flex-col gap-6">
 	{#if photo}
-		<img class="-mb-4 rounded-full" src="/cv/basket.jpg" alt="Filip Mårtensson" />
+		<div class="mb-2 flex items-center justify-center">
+			<img class="-mb-4 w-4/5 rounded-full" src="/cv/basket.jpg" alt="Filip Mårtensson" />
+		</div>
 	{/if}
 	<div class="flex flex-col items-center">
 		<h1 class="w-fit text-[2.2rem] !font-black leading-none">Sigfrid</h1>
