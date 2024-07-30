@@ -10,7 +10,7 @@
 	<div class="text-sm leading-tight">
 		<p class="font-black">{recipient}</p>
 		<p>{company}</p>
-		<a href="mailto:{email}" class="block font-bold text-edo">{email}</a>
+		<a href="mailto:{email}" class="text-primary block font-bold">{email}</a>
 
 		<br />
 

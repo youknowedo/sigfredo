@@ -196,6 +196,6 @@
 
 <style>
 	h4 {
-		@apply text-[1.25rem] text-edo;
+		@apply text-primary text-[1.25rem];
 	}
 </style>

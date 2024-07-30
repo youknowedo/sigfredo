@@ -24,7 +24,7 @@
 			Västra Götaland
 		</p>
 
-		<div class="flex flex-col gap-2 text-edo">
+		<div class="text-primary flex flex-col gap-2">
 			<a href="https://www.linkedin.com/in/sigfridwade/">/in/sigfridwade</a>
 			<a href="mailto:hello@sigfredo.fun">hello@sigfredo.fun</a>
 			<a href="tel:+46703048064">+46 (0)70 304 80 64</a>
