@@ -6,31 +6,32 @@
 	export let data;
 </script>
 
-<div class="fixed z-40 w-screen h-screen pointer-events-none bg-tex1 opacity-20"></div>
+<div class="bg-tex1 pointer-events-none fixed z-20 h-screen w-screen opacity-20"></div>
 
 <div
-	class="container relative flex min-h-[70vh] flex-col gap-32 pt-20 md:flex-row md:justify-center md:py-20"
+	class="container relative flex min-h-[80vh] flex-col gap-32 pt-20 md:min-h-0 md:flex-row md:justify-center md:py-20"
 >
-	<div class="hidden w-40 my-auto md:block">
+	<div class="relative my-auto hidden w-40 md:block">
+		<img class="absolute -top-10 right-1/2 w-20 translate-x-1/2" src="/assets/crown.png" alt="" />
 		<Sidebar />
 	</div>
-	<div class="absolute left-0 flex items-center justify-between w-full px-8 md:hidden">
+	<div class="absolute left-0 flex w-full items-center justify-between px-8 md:hidden">
 		<div class="flex gap-10">
 			<img src="/cv/sea.jpg" class="h-24 rounded-full" alt="" />
 			<Name />
 		</div>
-		<div class="flex flex-col items-end gap-2 font-bold text-left text-primary">
+		<div class="text-primary hidden flex-col items-end gap-2 text-left font-bold sm:flex">
 			<a href="https://www.linkedin.com/in/sigfridwade/">/in/sigfridwade</a>
 			<a href="mailto:hello@sigfredo.fun">hello@sigfredo.fun</a>
-			<a href="tel:+46703048064">+46 (0)70 304 80 64</a>
+			<a href="sms:+46703048064">+46 (0)70 304 80 64</a>
 		</div>
 	</div>
 
-	<div class="flex flex-col items-center justify-center flex-1 md:flex-none">
+	<div class="-mb-20 flex flex-1 flex-col items-center justify-center md:flex-none">
 		<div>
 			<h3 class="mb-4 text-5xl font-black">Tjena!</h3>
-			<p class="max-w-lg">
-				Sigge kallas jag och är primärt en frontend-utvecklare med fokus på webb. Jag har även
+			<p class="max-w-md lg:max-w-lg">
+				Sigge kallas jag och är primärt en fullstack-utvecklare med fokus på webb. Jag har även
 				erfarenhet av backend-, app-, och spelutveckling genom tidigare jobb och småprojekt. På
 				fritiden åker jag skateboard och samlar på gamla kameror.
 			</p>
@@ -38,20 +39,65 @@
 	</div>
 </div>
 
-<div class="relative flex items-center justify-center overflow-hidden h-80">
-	<div class="absolute right-1/2 z-40 w-[1536px] translate-x-1/2">
-		<img
-			src="/assets/ripsection1.png"
-			alt="background"
-			class="h-80 w-[1536px] bg-cover drop-shadow-md"
-		/>
-	</div>
+<div class="-mt-16 flex h-96 flex-col justify-end overflow-hidden">
+	<div class="relative flex h-80 items-center justify-center">
+		<div class="pointer-events-none absolute right-1/2 z-40 w-[1536px] translate-x-1/2">
+			<img
+				src="/assets/ripsection1.png"
+				alt="background"
+				class="h-80 w-[1536px] bg-cover drop-shadow-md"
+			/>
+		</div>
 
-	<div class="z-50 opacity-80">
-		<h1 class="font-mono text-4xl font-black">Sida under konstruktion</h1>
+		<div class="absolute top-0 flex w-[1536px] justify-around">
+			<img class="mt-16 h-4 opacity-80" src="/assets/tech/cs.png" alt="cs" />
+			<img class="mt-9 h-6 -rotate-6 opacity-80" src="/assets/tech/go.png" alt="go" />
+			<img class="mt-16 h-6 rotate-12 opacity-80" src="/assets/tech/js.png" alt="js" />
+			<img class="mt-8 h-6 opacity-80" src="/assets/tech/react.png" alt="react" />
+			<img class="-mt-3 h-6 -rotate-12 opacity-80" src="/assets/tech/rs.png" alt="rs" />
+			<img class="h-6 opacity-80" src="/assets/tech/svelte.png" alt="svelte" />
+			<img class="mt-1 h-4 opacity-80" src="/assets/tech/cpp.png" alt="cpp" />
+			<img class="mt-4 h-6 rotate-[20deg] opacity-80" src="/assets/tech/rn.png" alt="rn" />
+			<img class="mt-5 h-8 rotate-6 opacity-80" src="/assets/tech/ts.png" alt="ts" />
+		</div>
+
+		<div class="z-50 opacity-80">
+			<div class="relative mx-8">
+				<a
+					href="https://shinner.app"
+					target="_blank"
+					class="absolute -left-2 block h-full w-52 opacity-0"
+				>
+					Shinner
+				</a>
+				<a
+					href="https://ale.se/ungdomsradet"
+					target="_blank"
+					class="absolute left-[13.25rem] block h-full w-24 opacity-0"
+				>
+					Ale Ungdomsråd
+				</a>
+				<a
+					href="https://www.svenskalag.se/alebk"
+					target="_blank"
+					class="absolute left-[19.5rem] block h-full w-24 opacity-0"
+				>
+					Ale Basket
+				</a>
+				<a
+					href="https://www.volvo.com/"
+					target="_blank"
+					class="absolute -right-4 block h-full w-60 opacity-0"
+				>
+					VOLVO
+				</a>
+
+				<img class="pointer-events-none h-32 object-contain" src="/assets/companies.png" alt="" />
+			</div>
+		</div>
 	</div>
 </div>
 
-<div class="my-20">
+<div class="mx-8 my-20 flex justify-center">
 	<Gif gif={data.gif} width={400} />
 </div>
