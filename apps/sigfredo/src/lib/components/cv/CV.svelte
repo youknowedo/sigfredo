@@ -8,7 +8,7 @@
 		company: string;
 		location: string;
 		start: string;
-		end: string;
+		end?: string;
 		points: BulletPoint;
 	};
 	type Education = {
@@ -97,7 +97,7 @@
 
 	export let lang: 'sv' | 'en' = 'sv';
 	export let experiences: Experience[] = defaults.experiences;
-	export let educations: Education[] = defaults.educations;
+	export let educations: Education[] | undefined = undefined;
 	export let skills: Skill[] = defaults.skills;
 </script>
 
@@ -117,7 +117,10 @@
 					<h5 class="font-bold">
 						{experience.title} <br />
 					</h5>
-					<h6 class="text-nowrap italic">{experience.start} - {experience.end}</h6>
+					<h6 class="italic text-nowrap">
+						{experience.start}
+						{experience.end ? `- ${experience.end}` : ''}
+					</h6>
 				</div>
 				<h6 class="font-bold">
 					{experience.company} | {experience.location}
@@ -137,39 +140,41 @@
 			</div>
 		{/each}
 
-		<h4>
-			{#if lang === 'sv'}
-				Utbildning
-			{:else}
-				Education
-			{/if}
-		</h4>
+		{#if educations}
+			<h4>
+				{#if lang === 'sv'}
+					Utbildning
+				{:else}
+					Education
+				{/if}
+			</h4>
 
-		{#each educations as education}
-			<div class="mb-4 text-sm">
-				<div class="flex justify-between">
-					<h5 class="font-bold">
-						{education.degree} <br />
-					</h5>
-					<h6 class="text-nowrap italic">{education.start} - {education.end}</h6>
-				</div>
-				<h6 class="font-bold">
-					{education.school} | {education.location}
-				</h6>
+			{#each educations as education}
+				<div class="mb-4 text-sm">
+					<div class="flex justify-between">
+						<h5 class="font-bold">
+							{education.degree} <br />
+						</h5>
+						<h6 class="italic text-nowrap">{education.start} - {education.end}</h6>
+					</div>
+					<h6 class="font-bold">
+						{education.school} | {education.location}
+					</h6>
 
-				<div class="">
-					{#if typeof education.points === 'string'}
-						<p>{education.points}</p>
-					{:else}
-						<ul class="list-outside list-disc pl-5 [&_ul]:list-[revert]">
-							{#each education.points as point}
-								<Point {point} />
-							{/each}
-						</ul>
-					{/if}
+					<div class="">
+						{#if typeof education.points === 'string'}
+							<p>{education.points}</p>
+						{:else}
+							<ul class="list-outside list-disc pl-5 [&_ul]:list-[revert]">
+								{#each education.points as point}
+									<Point {point} />
+								{/each}
+							</ul>
+						{/if}
+					</div>
 				</div>
-			</div>
-		{/each}
+			{/each}
+		{/if}
 
 		<h4>
 			{#if lang === 'sv'}
