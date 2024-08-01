@@ -6,9 +6,9 @@
 
 <style>
 	:global(body) {
-		background: rgb(204, 204, 204);
+		background: rgb(204, 204, 204) !important;
 		width: 21cm;
 		height: 29.7cm;
-		margin: 0 auto;
+		margin: 0 auto !important;
 	}
 </style>
