@@ -15,13 +15,19 @@
 <div
 	class="container relative flex min-h-[80vh] flex-col gap-32 pt-20 md:min-h-0 md:flex-row md:justify-center md:py-20"
 >
-	<div class="relative hidden w-40 my-auto md:block">
-		<img class="absolute w-20 translate-x-1/2 -top-10 right-1/2" src="/assets/crown.png" alt="" />
+	<div class="hidden w-40 my-auto md:block">
 		<Sidebar />
 	</div>
 	<div class="absolute left-0 flex items-center justify-between w-full px-8 md:hidden">
 		<div class="flex gap-10">
-			<img src="/cv/sea.jpg" class="h-24 rounded-full" alt="" />
+			<div class="relative w-40">
+				<img
+					class="absolute w-20 translate-x-1/2 -top-10 right-1/2"
+					src="/assets/crown.png"
+					alt=""
+				/>
+				<img src="/cv/sea.jpg" class="rounded-full h-28" alt="" />
+			</div>
 			<Name />
 		</div>
 		<div class="flex-col items-end hidden gap-2 font-bold text-left text-primary sm:flex">
