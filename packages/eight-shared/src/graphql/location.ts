@@ -1,5 +1,4 @@
 import { gql } from "graphql-tag";
-import type { QueryResolvers } from "../generated/graphql";
 
 export const locationDefs = gql`
     type Location {
@@ -17,5 +16,3 @@ export const locationDefs = gql`
         getLocation(userId: ID!): Location
     }
 `;
-
-export const locationResolvers: QueryResolvers = {};

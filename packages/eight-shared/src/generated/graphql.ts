@@ -26,7 +26,22 @@ export type Location = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createUser?: Maybe<Session>;
+  login?: Maybe<Session>;
   setLocation?: Maybe<Location>;
+};
+
+
+export type MutationCreateUserArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
+
+export type MutationLoginArgs = {
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
 };
 
 
@@ -44,6 +59,21 @@ export type Query = {
 
 export type QueryGetLocationArgs = {
   userId: Scalars['ID']['input'];
+};
+
+export type Session = {
+  __typename?: 'Session';
+  expires_at: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  user_id: Scalars['ID']['output'];
+};
+
+export type User = {
+  __typename?: 'User';
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  password_hash: Scalars['String']['output'];
+  username: Scalars['String']['output'];
 };
 
 
@@ -123,7 +153,9 @@ export type ResolversTypes = {
   Location: ResolverTypeWrapper<Location>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  Session: ResolverTypeWrapper<Session>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  User: ResolverTypeWrapper<User>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -134,7 +166,9 @@ export type ResolversParentTypes = {
   Location: Location;
   Mutation: {};
   Query: {};
+  Session: Session;
   String: Scalars['String']['output'];
+  User: User;
 };
 
 export type LocationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Location'] = ResolversParentTypes['Location']> = {
@@ -146,6 +180,8 @@ export type LocationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createUser?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'email' | 'password' | 'username'>>;
+  login?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'password' | 'username'>>;
   setLocation?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<MutationSetLocationArgs, 'latitude' | 'longitude' | 'userId'>>;
 };
 
@@ -153,9 +189,26 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getLocation?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryGetLocationArgs, 'userId'>>;
 };
 
+export type SessionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Session'] = ResolversParentTypes['Session']> = {
+  expires_at?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  user_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  password_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Location?: LocationResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Session?: SessionResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 };
 

@@ -1,4 +1,4 @@
-import { resolvers } from "@/graphql";
+import { resolvers } from "@/lib/graphql";
 import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { typeDefs } from "eight-shared/graphql";
