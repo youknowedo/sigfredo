@@ -1,18 +1,11 @@
 import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import { postLocationDefs } from "eight-shared/graphql/mutations";
-import { gql } from "graphql-tag";
+import { resolvers, typeDefs } from "eight-shared/graphql";
 import { NextRequest } from "next/server";
 
-const resolvers = {
-    Query: {
-        hello: () => "Hello world!",
-    },
-};
-
 const server = new ApolloServer({
-    typeDefs: [postLocationDefs],
-    resolvers: [resolvers],
+    typeDefs,
+    resolvers,
 });
 
 const handler = startServerAndCreateNextHandler<NextRequest>(server, {

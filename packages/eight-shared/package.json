@@ -2,8 +2,7 @@
     "name": "eight-shared",
     "version": "0.0.1",
     "exports": {
-        "./graphql/mutations": "./src/graphql/mutations/index.ts",
-        "./graphql/queries": "./src/graphql/queries/index.ts"
+        "./graphql": "./src/graphql/index.ts"
     },
     "files": [
         "src"
@@ -14,5 +13,17 @@
     "type": "module",
     "dependencies": {
         "graphql-tag": "^2.12.6"
+    },
+    "devDependencies": {
+        "@graphql-codegen/cli": "5.0.2",
+        "@parcel/watcher": "^2.4.1",
+        "typescript": "^5.5.4",
+        "@graphql-codegen/typescript-resolvers": "4.2.1",
+        "@graphql-codegen/typescript": "4.0.9",
+        "@graphql-codegen/introspection": "4.0.3"
+    },
+    "scripts": {
+        "codegen": "graphql-codegen --config codegen.ts",
+        "dev": "graphql-codegen --config codegen.ts --watch"
     }
 }
