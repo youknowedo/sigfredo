@@ -6,28 +6,32 @@
 	export let data;
 </script>
 
-<div class="bg-tex1 pointer-events-none fixed z-20 h-screen w-screen opacity-20"></div>
+<svelte:head>
+	<title>Sigfredo | Sigfrid Wade Filip Mårtensson</title>
+</svelte:head>
+
+<div class="fixed z-20 w-screen h-screen pointer-events-none bg-tex1 opacity-20"></div>
 
 <div
 	class="container relative flex min-h-[80vh] flex-col gap-32 pt-20 md:min-h-0 md:flex-row md:justify-center md:py-20"
 >
-	<div class="relative my-auto hidden w-40 md:block">
-		<img class="absolute -top-10 right-1/2 w-20 translate-x-1/2" src="/assets/crown.png" alt="" />
+	<div class="relative hidden w-40 my-auto md:block">
+		<img class="absolute w-20 translate-x-1/2 -top-10 right-1/2" src="/assets/crown.png" alt="" />
 		<Sidebar />
 	</div>
-	<div class="absolute left-0 flex w-full items-center justify-between px-8 md:hidden">
+	<div class="absolute left-0 flex items-center justify-between w-full px-8 md:hidden">
 		<div class="flex gap-10">
 			<img src="/cv/sea.jpg" class="h-24 rounded-full" alt="" />
 			<Name />
 		</div>
-		<div class="text-primary hidden flex-col items-end gap-2 text-left font-bold sm:flex">
+		<div class="flex-col items-end hidden gap-2 font-bold text-left text-primary sm:flex">
 			<a href="https://www.linkedin.com/in/sigfridwade/">/in/sigfridwade</a>
 			<a href="mailto:hello@sigfredo.fun">hello@sigfredo.fun</a>
 			<a href="sms:+46703048064">+46 (0)70 304 80 64</a>
 		</div>
 	</div>
 
-	<div class="-mb-20 flex flex-1 flex-col items-center justify-center md:flex-none">
+	<div class="flex flex-col items-center justify-center flex-1 -mb-20 md:flex-none">
 		<div>
 			<h3 class="mb-4 text-5xl font-black">Tjena!</h3>
 			<p class="max-w-md lg:max-w-lg">
@@ -39,8 +43,8 @@
 	</div>
 </div>
 
-<div class="-mt-16 flex h-96 flex-col justify-end overflow-hidden">
-	<div class="relative flex h-80 items-center justify-center">
+<div class="flex flex-col justify-end -mt-16 overflow-hidden h-96">
+	<div class="relative flex items-center justify-center h-80">
 		<div class="pointer-events-none absolute right-1/2 z-40 w-[1536px] translate-x-1/2">
 			<img
 				src="/assets/ripsection1.png"
@@ -50,15 +54,15 @@
 		</div>
 
 		<div class="absolute top-0 flex w-[1536px] justify-around">
-			<img class="mt-16 h-4 opacity-80" src="/assets/tech/cs.png" alt="cs" />
-			<img class="mt-9 h-6 -rotate-6 opacity-80" src="/assets/tech/go.png" alt="go" />
-			<img class="mt-16 h-6 rotate-12 opacity-80" src="/assets/tech/js.png" alt="js" />
-			<img class="mt-8 h-6 opacity-80" src="/assets/tech/react.png" alt="react" />
-			<img class="-mt-3 h-6 -rotate-12 opacity-80" src="/assets/tech/rs.png" alt="rs" />
+			<img class="h-4 mt-16 opacity-80" src="/assets/tech/cs.png" alt="cs" />
+			<img class="h-6 mt-9 -rotate-6 opacity-80" src="/assets/tech/go.png" alt="go" />
+			<img class="h-6 mt-16 rotate-12 opacity-80" src="/assets/tech/js.png" alt="js" />
+			<img class="h-6 mt-8 opacity-80" src="/assets/tech/react.png" alt="react" />
+			<img class="h-6 -mt-3 -rotate-12 opacity-80" src="/assets/tech/rs.png" alt="rs" />
 			<img class="h-6 opacity-80" src="/assets/tech/svelte.png" alt="svelte" />
-			<img class="mt-1 h-4 opacity-80" src="/assets/tech/cpp.png" alt="cpp" />
+			<img class="h-4 mt-1 opacity-80" src="/assets/tech/cpp.png" alt="cpp" />
 			<img class="mt-4 h-6 rotate-[20deg] opacity-80" src="/assets/tech/rn.png" alt="rn" />
-			<img class="mt-5 h-8 rotate-6 opacity-80" src="/assets/tech/ts.png" alt="ts" />
+			<img class="h-8 mt-5 rotate-6 opacity-80" src="/assets/tech/ts.png" alt="ts" />
 		</div>
 
 		<div class="z-50 opacity-80">
@@ -66,7 +70,7 @@
 				<a
 					href="https://shinner.app"
 					target="_blank"
-					class="absolute -left-2 block h-full w-52 opacity-0"
+					class="absolute block h-full opacity-0 -left-2 w-52"
 				>
 					Shinner
 				</a>
@@ -87,17 +91,17 @@
 				<a
 					href="https://www.volvo.com/"
 					target="_blank"
-					class="absolute -right-4 block h-full w-60 opacity-0"
+					class="absolute block h-full opacity-0 -right-4 w-60"
 				>
 					VOLVO
 				</a>
 
-				<img class="pointer-events-none h-32 object-contain" src="/assets/companies.png" alt="" />
+				<img class="object-contain h-32 pointer-events-none" src="/assets/companies.png" alt="" />
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="mx-8 my-20 flex justify-center">
+<div class="flex justify-center mx-8 my-20">
 	<Gif gif={data.gif} width={400} />
 </div>

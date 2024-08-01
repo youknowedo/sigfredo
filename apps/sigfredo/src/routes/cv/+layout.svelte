@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>CV | Sigfrid Wade Filip Mårtensson</title>
+</svelte:head>
+
 <slot />
 
 <style>
