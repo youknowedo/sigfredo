@@ -7,9 +7,9 @@ const config: CodegenConfig = {
         "src/generated/graphql.ts": {
             plugins: ["typescript", "typescript-resolvers"],
         },
-        "./graphql.schema.json": {
-            plugins: ["introspection"],
-        },
+    },
+    config: {
+        contextType: "../graphql#Context",
     },
 };
 

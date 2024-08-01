@@ -6,6 +6,13 @@ export const authDefs = gql`
         username: String!
         email: String!
         password_hash: String!
+        location: Location
+    }
+
+    type Location {
+        longitude: Float!
+        latitude: Float!
+        timestamp: String!
     }
 
     type Session {
@@ -15,12 +22,13 @@ export const authDefs = gql`
     }
 
     type Mutation {
-        createUser(
-            email: String!
-            username: String!
-            password: String!
-        ): Session
-
+        signup(email: String!, username: String!, password: String!): Session
         login(username: String!, password: String!): Session
+
+        setUserLocation(longitude: Float!, latitude: Float!): Location
+    }
+
+    type Query {
+        getUserLocation(userId: ID!): Location
     }
 `;

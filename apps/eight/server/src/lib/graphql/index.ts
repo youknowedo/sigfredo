@@ -1,3 +1,5 @@
-import { locationMutations, locationQueries } from "./location";
+import { userMutations, userQueries } from "./user";
 
-export const resolvers = [locationQueries, locationMutations];
+export const resolvers = [
+    // userQueries, userMutations
+];

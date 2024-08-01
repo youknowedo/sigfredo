@@ -5,12 +5,14 @@ import { GraphQLError } from "graphql";
 import { generateIdFromEntropySize } from "lucia";
 import { lucia } from "../auth";
 import { db } from "../db";
-import { userTable } from "../schema/auth";
+import { locationTable, userTable } from "../schema/user";
 
-export const authQueries: QueryResolvers = {};
+// TODO: Move business logic to models
 
-export const authMutations: MutationResolvers = {
-    createUser: async (_, args) => {
+export const userQueries: QueryResolvers = {};
+
+export const userMutations: MutationResolvers = {
+    signup: async (_, args) => {
         const { email, password, username } = args;
 
         const userDuplicate:
@@ -73,7 +75,6 @@ export const authMutations: MutationResolvers = {
             expires_at: session.expiresAt.toString(),
         };
     },
-
     login: async (_, args) => {
         const { username, password } = args;
 
@@ -114,5 +115,26 @@ export const authMutations: MutationResolvers = {
             user_id: user.id,
             expires_at: session.expiresAt.toString(),
         };
+    },
+
+    setUserLocation: async (_, args, context) => {
+        const { longitude, latitude } = args;
+
+        const location = {
+            longitude,
+            latitude,
+            timestamp: new Date().toISOString(),
+        };
+
+        await db
+            .update(locationTable)
+            .set({
+                longitude: location.longitude,
+                latitude: location.latitude,
+                timestamp: location.timestamp,
+            })
+            .where(eq(locationTable.userId, context.userId));
+
+        return location;
     },
 };
