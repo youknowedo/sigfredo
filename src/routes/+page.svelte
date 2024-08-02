@@ -110,7 +110,21 @@
 
 <div class="py-20">
 	<div class="flex justify-center">
-		<img src="/assets/projekt.png" class="h-16" alt="" />
+		<img src="/assets/projekt.png" class="mb-20 h-16" alt="" />
+	</div>
+
+	<!-- TODO: Make this look better -->
+	<div class="container grid grid-cols-2">
+		<div class="flex flex-col justify-center">
+			<h3 class="text-3xl font-bold">YAFFE</h3>
+			<p class="max-w-md">
+				Yet Another Fast Forward Extension. Snabbar upp YouTube reklam så du slipper de (nästan)
+				helt och hållet! Chrome Tillägg skrivet i TypeScript med webpack.
+			</p>
+		</div>
+		<div class="flex items-center justify-center">
+			<img class="h-64 rounded-xl" src="/assets/projects/yaffe.png" alt="" />
+		</div>
 	</div>
 </div>
 
