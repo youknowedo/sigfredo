@@ -115,14 +115,16 @@
 
 	<div class="relative z-50 flex h-[4.2in] justify-center drop-shadow-md">
 		<!-- TODO: Fix jitter when mouse touches bottom part of Polaroid -->
-		<div
+		<a
+			href="https://chromewebstore.google.com/detail/yaffe/beoeheggmopaddkfhcpjfllbmkmofmgg"
+			target="_blank"
 			class="absolute top-0 flex aspect-[3.5/4.2] w-[3.5in] rotate-3 flex-col items-center bg-white duration-200 hover:-top-4 hover:rotate-0"
 		>
 			<img class="mx-auto mt-[0.2in] h-[3.1in] w-[3.1in]" src="/assets/projects/yaffe.png" alt="" />
 			<div class="my-auto">
 				<img class="h-14" src="/assets/projects/yaffe-text.png" alt="" />
 			</div>
-		</div>
+		</a>
 	</div>
 </div>
 
