@@ -113,17 +113,15 @@
 		<img src="/assets/projekt.png" class="mb-20 h-16" alt="" />
 	</div>
 
-	<!-- TODO: Make this look better -->
-	<div class="container grid grid-cols-2">
-		<div class="flex flex-col justify-center">
-			<h3 class="text-3xl font-bold">YAFFE</h3>
-			<p class="max-w-md">
-				Yet Another Fast Forward Extension. Snabbar upp YouTube reklam så du slipper de (nästan)
-				helt och hållet! Chrome Tillägg skrivet i TypeScript med webpack.
-			</p>
-		</div>
-		<div class="flex items-center justify-center">
-			<img class="h-64 rounded-xl" src="/assets/projects/yaffe.png" alt="" />
+	<div class="relative z-50 flex h-[4.2in] justify-center drop-shadow-md">
+		<!-- TODO: Fix jitter when mouse touches bottom part of Polaroid -->
+		<div
+			class="absolute top-0 flex aspect-[3.5/4.2] w-[3.5in] rotate-3 flex-col items-center bg-white duration-200 hover:-top-4 hover:rotate-0"
+		>
+			<img class="mx-auto mt-[0.2in] h-[3.1in] w-[3.1in]" src="/assets/projects/yaffe.png" alt="" />
+			<div class="my-auto">
+				<img class="h-14" src="/assets/projects/yaffe-text.png" alt="" />
+			</div>
 		</div>
 	</div>
 </div>
