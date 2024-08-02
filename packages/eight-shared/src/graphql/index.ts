@@ -1,14 +1,11 @@
 import { DocumentNode } from "graphql";
 import { authDefs } from "./user";
-export type {
-    MutationResolvers,
-    QueryResolvers,
-    Resolvers,
-} from "../generated/graphql";
+export * from "../generated/graphql";
 
 export const typeDefs: DocumentNode[] = [authDefs];
 
-export type Context = {
-    userId: string;
-    sessionId: string;
+export type Context<T = any> = {
+    userId?: string;
+    sessionId?: string;
+    models: T;
 };

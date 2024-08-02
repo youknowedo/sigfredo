@@ -1,19 +1,19 @@
-import { hash, verify } from "@node-rs/argon2";
+import { lucia } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { userTable } from "@/lib/schema/user";
 import { eq, or } from "drizzle-orm";
-import { MutationResolvers, QueryResolvers } from "eight-shared/graphql";
+import { Context, Session } from "eight-shared/graphql";
 import { GraphQLError } from "graphql";
 import { generateIdFromEntropySize } from "lucia";
-import { lucia } from "../auth";
-import { db } from "../db";
-import { locationTable, userTable } from "../schema/user";
+import { ModelContext } from ".";
 
-// TODO: Move business logic to models
-
-export const userQueries: QueryResolvers = {};
-
-export const userMutations: MutationResolvers = {
-    signup: async (_, args) => {
-        const { email, password, username } = args;
+export const auth = (context: ModelContext) => ({
+    signup: async (
+        email: string,
+        username: string,
+        password: string
+    ): Promise<Session> => {
+        console.log("signup", email, username, password);
 
         const userDuplicate:
             | {
@@ -51,12 +51,10 @@ export const userMutations: MutationResolvers = {
 
         // TODO: Validate email, password & username
 
-        const passwordHash = await hash(password, {
-            // recommended minimum parameters
+        const passwordHash = await Bun.password.hash(password, {
+            algorithm: "argon2id",
             memoryCost: 19456,
             timeCost: 2,
-            outputLen: 32,
-            parallelism: 1,
         });
         const id = generateIdFromEntropySize(10);
 
@@ -75,8 +73,9 @@ export const userMutations: MutationResolvers = {
             expires_at: session.expiresAt.toString(),
         };
     },
-    login: async (_, args) => {
-        const { username, password } = args;
+
+    login: async (username: string, password: string): Promise<Session> => {
+        console.log("login", username, password);
 
         const user = await db
             .select()
@@ -94,12 +93,11 @@ export const userMutations: MutationResolvers = {
             });
         }
 
-        const validPassword = await verify(user.passwordHash, password, {
-            memoryCost: 19456,
-            timeCost: 2,
-            outputLen: 32,
-            parallelism: 1,
-        });
+        const validPassword = await Bun.password.verify(
+            password,
+            user.passwordHash,
+            "argon2id"
+        );
         if (!validPassword) {
             throw new GraphQLError("Invalid email or password", {
                 extensions: {
@@ -116,25 +114,4 @@ export const userMutations: MutationResolvers = {
             expires_at: session.expiresAt.toString(),
         };
     },
-
-    setUserLocation: async (_, args, context) => {
-        const { longitude, latitude } = args;
-
-        const location = {
-            longitude,
-            latitude,
-            timestamp: new Date().toISOString(),
-        };
-
-        await db
-            .update(locationTable)
-            .set({
-                longitude: location.longitude,
-                latitude: location.latitude,
-                timestamp: location.timestamp,
-            })
-            .where(eq(locationTable.userId, context.userId));
-
-        return location;
-    },
-};
+});

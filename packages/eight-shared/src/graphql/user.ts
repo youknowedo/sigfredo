@@ -25,10 +25,11 @@ export const authDefs = gql`
         signup(email: String!, username: String!, password: String!): Session
         login(username: String!, password: String!): Session
 
-        setUserLocation(longitude: Float!, latitude: Float!): Location
+        userLocation(longitude: Float!, latitude: Float!): Location
     }
 
     type Query {
-        getUserLocation(userId: ID!): Location
+        currentUser(): User
+        user(id: ID!): User
     }
 `;

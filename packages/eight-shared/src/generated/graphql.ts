@@ -27,8 +27,8 @@ export type Location = {
 export type Mutation = {
   __typename?: 'Mutation';
   login?: Maybe<Session>;
-  setUserLocation?: Maybe<Location>;
   signup?: Maybe<Session>;
+  userLocation?: Maybe<Location>;
 };
 
 
@@ -38,26 +38,26 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationSetUserLocationArgs = {
-  latitude: Scalars['Float']['input'];
-  longitude: Scalars['Float']['input'];
-};
-
-
 export type MutationSignupArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
   username: Scalars['String']['input'];
 };
 
+
+export type MutationUserLocationArgs = {
+  latitude: Scalars['Float']['input'];
+  longitude: Scalars['Float']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  getUserLocation?: Maybe<Location>;
+  user?: Maybe<User>;
 };
 
 
-export type QueryGetUserLocationArgs = {
-  userId: Scalars['ID']['input'];
+export type QueryUserArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type Session = {
@@ -180,12 +180,12 @@ export type LocationResolvers<ContextType = Context, ParentType extends Resolver
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   login?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'password' | 'username'>>;
-  setUserLocation?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<MutationSetUserLocationArgs, 'latitude' | 'longitude'>>;
   signup?: Resolver<Maybe<ResolversTypes['Session']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'username'>>;
+  userLocation?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<MutationUserLocationArgs, 'latitude' | 'longitude'>>;
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getUserLocation?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<QueryGetUserLocationArgs, 'userId'>>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
 };
 
 export type SessionResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Session'] = ResolversParentTypes['Session']> = {
