@@ -1,9 +1,17 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import Name from '$lib/components/Name.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
+	import Text from '$lib/components/Text.svelte';
+	import { lang } from '$lib/stores';
 	import { Gif } from '@giphy/svelte-components';
 
 	export let data;
+
+	if (browser && !$lang) {
+		navigator.language.startsWith('sv') ? lang.set('sv') : lang.set('en');
+		document.cookie = `lang=${$lang}; max-age=31536000; path=/`;
+	}
 </script>
 
 <svelte:head>
@@ -15,6 +23,13 @@
 <div
 	class="container relative flex min-h-[80vh] flex-col gap-32 pt-20 md:min-h-0 md:flex-row md:justify-center md:py-20"
 >
+	<button
+		class="absolute right-20 top-12 font-typeWriter text-lg uppercase"
+		on:click={() => lang.set($lang == 'sv' ? 'en' : 'sv')}
+	>
+		{$lang}
+	</button>
+
 	<div class="my-auto hidden w-40 md:block">
 		<Sidebar />
 	</div>
@@ -30,7 +45,7 @@
 			</div>
 			<Name />
 		</div>
-		<div class="hidden flex-col items-end gap-2 text-left font-bold text-primary sm:flex">
+		<div class="hidden flex-col items-end gap-2 text-left sm:flex">
 			<a href="https://www.linkedin.com/in/sigfridwade/">/in/sigfridwade</a>
 			<a href="mailto:hello@sigfredo.fun">hello@sigfredo.fun</a>
 			<a href="sms:+46703048064">+46 (0)70 304 80 64</a>
@@ -40,10 +55,22 @@
 	<div class="-mb-20 flex flex-1 flex-col items-center justify-center md:flex-none">
 		<div>
 			<h3 class="mb-4 text-5xl font-black">Tjena!</h3>
-			<p class="max-w-md lg:max-w-lg">
-				Sigge kallas jag och är primärt en fullstack-utvecklare med fokus på webb. Jag har även
-				erfarenhet av backend-, app-, och spelutveckling genom tidigare jobb och småprojekt. På
-				fritiden åker jag skateboard och samlar på gamla kameror.
+			<p class="max-w-md font-typeWriter md:text-lg lg:max-w-xl">
+				<Text>
+					<span slot="sv">
+						Just nu en gymnasieingenjörsstudent på
+						<a href="https://gtg.se">Göteborgsregionens Tekniska Gymnasium</a> med inriktning i på elektronik
+						& programmering i produktionsindustrin. Ser mig själv som en fullstack utvecklare med alltid
+						något på gång. Annars åker jag säkert skateboard, lyssna på musik eller samla på kameror
+						(om ekonomin tillåter).
+					</span>
+
+					Currently a high school engineering student at
+					<a href="https://gtg.se">Gothenburg Region's Technical High School</a> with a minor in electronics
+					& programming in the production industry. I see myself as a full-stack developer who always
+					has something going on. Otherwise, I'm probably skateboarding, listening to music or collecting
+					cameras (if my economy allows it).
+				</Text>
 			</p>
 		</div>
 	</div>
@@ -110,21 +137,33 @@
 
 <div class="py-20">
 	<div class="flex justify-center">
-		<img src="/assets/projekt.png" class="mb-20 h-16" alt="" />
+		<img
+			src={$lang == 'sv' ? '/assets/projekt.png' : '/assets/projects.png'}
+			class="mb-20 h-16"
+			alt=""
+		/>
 	</div>
 
-	<div class="relative z-50 flex h-[4.2in] justify-center drop-shadow-md">
-		<!-- TODO: Fix jitter when mouse touches bottom part of Polaroid -->
-		<a
-			href="https://chromewebstore.google.com/detail/yaffe/beoeheggmopaddkfhcpjfllbmkmofmgg"
-			target="_blank"
-			class="absolute top-0 flex aspect-[3.5/4.2] w-[3.5in] rotate-3 flex-col items-center bg-white duration-200 hover:-top-4 hover:rotate-0"
+	<div class="relative flex h-[4.1in] justify-center">
+		<div
+			class=" absolute top-0 z-50 flex rotate-3 justify-center drop-shadow-md duration-200 hover:-top-4 hover:rotate-0 hover:pb-6"
 		>
-			<img class="mx-auto mt-[0.2in] h-[3.1in] w-[3.1in]" src="/assets/projects/yaffe.png" alt="" />
-			<div class="my-auto">
-				<img class="h-14" src="/assets/projects/yaffe-text.png" alt="" />
-			</div>
-		</a>
+			<!-- TODO: Fix jitter when mouse touches bottom part of Polaroid -->
+			<a
+				href="https://chromewebstore.google.com/detail/yaffe/beoeheggmopaddkfhcpjfllbmkmofmgg"
+				target="_blank"
+				class="flex aspect-[3.5/4.2] h-[4.2in] w-[3.5in] flex-col items-center bg-white"
+			>
+				<img
+					class="mx-auto mt-[0.2in] h-[3.1in] w-[3.1in]"
+					src="/assets/projects/yaffe.png"
+					alt=""
+				/>
+				<div class="my-auto">
+					<img class="h-14" src="/assets/projects/yaffe-text.png" alt="" />
+				</div>
+			</a>
+		</div>
 	</div>
 </div>
 

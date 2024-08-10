@@ -63,6 +63,7 @@ const config = {
 			},
 			fontFamily: {
 				default: ['Lato', 'sans-serif'],
+				typeWriter: ['"Special Elite"', 'monospace'],
 				sans: [...fontFamily.sans]
 			}
 		}
