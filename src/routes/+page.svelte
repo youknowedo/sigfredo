@@ -8,10 +8,7 @@
 
 	export let data;
 
-	if (browser && !$lang) {
-		navigator.language.startsWith('sv') ? lang.set('sv') : lang.set('en');
-		document.cookie = `lang=${$lang}; max-age=31536000; path=/`;
-	}
+	if (browser && !$lang) lang.set(navigator.language.startsWith('sv') ? 'sv' : 'en');
 </script>
 
 <svelte:head>
@@ -22,7 +19,7 @@
 
 <div class="">
 	<div
-		class="container relative flex min-h-[80vh] flex-col gap-32 pt-20 md:min-h-0 md:flex-row md:justify-center md:py-20"
+		class="container relative flex min-h-[80vh] flex-col gap-32 pt-20 md:min-h-0 md:flex-row md:items-center md:justify-center md:py-20"
 	>
 		<button
 			class="absolute right-20 top-12 font-typeWriter text-lg uppercase"
@@ -53,16 +50,16 @@
 			</div>
 		</div>
 
-		<div class="-mb-20 flex flex-1 flex-col items-center justify-center md:flex-none">
+		<div class="flex flex-1 flex-col items-center justify-center md:flex-none">
 			<div>
-				<h3 class="mb-4 text-5xl font-black">Tjena!</h3>
+				<img class="mb-4 h-20" src="/assets/tjena.webp" alt="Text 'Tjena!'" />
 				<p class="max-w-md font-typeWriter md:text-lg lg:max-w-xl">
 					<Text>
 						<span slot="sv">
 							Just nu en gymnasieingenjörsstudent på
 							<a href="https://gtg.se">Göteborgsregionens Tekniska Gymnasium</a> med inriktning i på
 							elektronik & programmering i produktionsindustrin. Ser mig själv som en fullstack utvecklare
-							med alltid något på gång. Annars åker jag säkert skateboard, lyssna på musik eller samla
+							med alltid något på gång. Annars åker jag säkert skateboard, lyssnar på musik eller samlar
 							på kameror (om ekonomin tillåter).
 						</span>
 
