@@ -38,10 +38,10 @@
 			<div class="relative w-40">
 				<img
 					class="absolute -top-10 right-1/2 w-20 translate-x-1/2"
-					src="/assets/crown.png"
+					src="/assets/crown.webp"
 					alt=""
 				/>
-				<img src="/cv/sea.jpg" class="h-28 rounded-full" alt="" />
+				<img src="/cv/sea.webp" class="h-28 rounded-full" alt="" />
 			</div>
 			<Name />
 		</div>
@@ -80,22 +80,22 @@
 	<div class="relative flex h-80 items-center justify-center">
 		<div class="pointer-events-none absolute right-1/2 z-40 w-[1536px] translate-x-1/2">
 			<img
-				src="/assets/ripsection1.png"
+				src="/assets/ripsection1.webp"
 				alt="background"
 				class="h-80 w-[1536px] bg-cover drop-shadow-md"
 			/>
 		</div>
 
 		<div class="absolute top-0 flex w-[1536px] justify-around">
-			<img class="mt-16 h-4 opacity-80" src="/assets/tech/cs.png" alt="cs" />
-			<img class="mt-9 h-6 -rotate-6 opacity-80" src="/assets/tech/go.png" alt="go" />
-			<img class="mt-16 h-6 rotate-12 opacity-80" src="/assets/tech/js.png" alt="js" />
-			<img class="mt-8 h-6 opacity-80" src="/assets/tech/react.png" alt="react" />
-			<img class="-mt-3 h-6 -rotate-12 opacity-80" src="/assets/tech/rs.png" alt="rs" />
-			<img class="h-6 opacity-80" src="/assets/tech/svelte.png" alt="svelte" />
-			<img class="mt-1 h-4 opacity-80" src="/assets/tech/cpp.png" alt="cpp" />
-			<img class="mt-4 h-6 rotate-[20deg] opacity-80" src="/assets/tech/rn.png" alt="rn" />
-			<img class="mt-5 h-8 rotate-6 opacity-80" src="/assets/tech/ts.png" alt="ts" />
+			<img class="mt-16 h-4 opacity-80" src="/assets/tech/cs.webp" alt="cs" />
+			<img class="mt-9 h-6 -rotate-6 opacity-80" src="/assets/tech/go.webp" alt="go" />
+			<img class="mt-16 h-6 rotate-12 opacity-80" src="/assets/tech/js.webp" alt="js" />
+			<img class="mt-8 h-6 opacity-80" src="/assets/tech/react.webp" alt="react" />
+			<img class="-mt-3 h-6 -rotate-12 opacity-80" src="/assets/tech/rs.webp" alt="rs" />
+			<img class="h-6 opacity-80" src="/assets/tech/svelte.webp" alt="svelte" />
+			<img class="mt-1 h-4 opacity-80" src="/assets/tech/cpp.webp" alt="cpp" />
+			<img class="mt-4 h-6 rotate-[20deg] opacity-80" src="/assets/tech/rn.webp" alt="rn" />
+			<img class="mt-5 h-8 rotate-6 opacity-80" src="/assets/tech/ts.webp" alt="ts" />
 		</div>
 
 		<div class="z-50 opacity-80">
@@ -129,7 +129,7 @@
 					VOLVO
 				</a>
 
-				<img class="pointer-events-none h-32 object-contain" src="/assets/companies.png" alt="" />
+				<img class="pointer-events-none h-32 object-contain" src="/assets/companies.webp" alt="" />
 			</div>
 		</div>
 	</div>
@@ -138,7 +138,7 @@
 <div class="py-20">
 	<div class="flex justify-center">
 		<img
-			src={$lang == 'sv' ? '/assets/projekt.png' : '/assets/projects.png'}
+			src={$lang == 'sv' ? '/assets/projekt.webp' : '/assets/projects.webp'}
 			class="mb-20 h-16"
 			alt=""
 		/>
@@ -156,11 +156,11 @@
 			>
 				<img
 					class="mx-auto mt-[0.2in] h-[3.1in] w-[3.1in]"
-					src="/assets/projects/yaffe.png"
+					src="/assets/projects/yaffe.webp"
 					alt=""
 				/>
 				<div class="my-auto">
-					<img class="h-14" src="/assets/projects/yaffe-text.png" alt="" />
+					<img class="h-14" src="/assets/projects/yaffe-text.webp" alt="" />
 				</div>
 			</a>
 		</div>
