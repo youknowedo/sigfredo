@@ -78,5 +78,5 @@
 }
 
 a {
-	@apply text-primary;
+	@apply text-primary drop-shadow-sm;
 }

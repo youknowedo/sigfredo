@@ -1,10 +1,10 @@
-<div class="flex flex-col items-center w-36">
-	<h1 class="w-fit text-[2.2rem] !font-black leading-none">Sigfrid</h1>
+<h2 class="flex w-36 flex-col items-center">
+	<span class="w-fit text-[2.2rem] !font-black leading-none">Sigfrid</span>
 	<div class="my-1 flex w-36 justify-center bg-black py-1.5 text-white">
-		<h3 class="w-fit text-[0.75rem] !font-black leading-none tracking-wider">Wade Filip</h3>
+		<span class="w-fit text-[0.75rem] !font-black leading-none tracking-wider">Wade Filip</span>
 	</div>
-	<h2 class="w-fit text-[1.22rem] !font-black leading-none">Mårtensson</h2>
-</div>
+	<span class="w-fit text-[1.22rem] !font-black leading-none">Mårtensson</span>
+</h2>
 
 <style>
 	h1,
