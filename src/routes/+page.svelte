@@ -21,7 +21,11 @@
 <div class="pointer-events-none fixed z-20 h-screen w-screen bg-tex1 opacity-20"></div>
 
 <div class="">
-	<StoryblokComponent blok={data.story.content} />
+	{#if $lang == 'sv'}
+		<StoryblokComponent blok={data.storySwedish.content} />
+	{:else}
+		<StoryblokComponent blok={data.story.content} />
+	{/if}
 
 	<div class="my-20 flex justify-center px-8">
 		<Gif gif={data.gif} width={400} />
