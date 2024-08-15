@@ -1,24 +1,25 @@
-import Feature from '$lib/components/storyblok/Feature.svelte';
-import Grid from '$lib/components/storyblok/Grid.svelte';
+import Hero from '$lib/components/storyblok/Hero.svelte';
 import Page from '$lib/components/storyblok/Page.svelte';
-import Text from '$lib/components/storyblok/Text.svelte';
+import Companies from '$lib/components/storyblok/Companies.svelte';
+import Projects from '$lib/components/storyblok/Projects.svelte';
 import { apiPlugin, storyblokInit, useStoryblokApi } from '@storyblok/svelte';
-import type { LayoutServerLoad } from './$types';
+import type { LayoutLoad } from './$types';
 
-export const load: LayoutServerLoad = async () => {
+export const load: LayoutLoad = async ({ data }) => {
 	storyblokInit({
 		accessToken: 'iU45cJ4Fob6IVUE1qoj4gAtt',
 		use: [apiPlugin],
 		components: {
-			feature: Feature,
-			grid: Grid,
 			page: Page,
-			text: Text
+			hero: Hero,
+			companies: Companies,
+			projects: Projects
 		}
 	});
 	const storyblokApi = await useStoryblokApi();
 
 	return {
+		...data,
 		storyblokApi: storyblokApi
 	};
 };

@@ -6,7 +6,7 @@
 </script>
 
 {#key blok}
-	<div use:storyblokEditable={blok} class="px-6">
+	<div use:storyblokEditable={blok}>
 		{#if Array.isArray(blok.body)}
 			{#each blok.body as b}
 				<StoryblokComponent blok={b} />
