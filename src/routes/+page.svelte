@@ -5,10 +5,16 @@
 	import Text from '$lib/components/Text.svelte';
 	import { lang } from '$lib/stores';
 	import { Gif } from '@giphy/svelte-components';
+	import { useStoryblokBridge } from '@storyblok/svelte';
+	import { onMount } from 'svelte';
 
 	export let data;
 
 	if (browser && !$lang) lang.set(navigator.language.startsWith('sv') ? 'sv' : 'en');
+
+	onMount(() => {
+		useStoryblokBridge(data.story.id, (newStory) => (data.story = newStory));
+	});
 </script>
 
 <svelte:head>
