@@ -46,9 +46,9 @@
 		<div class="flex flex-1 flex-col items-center justify-center md:flex-none">
 			<div>
 				<img class="mb-4 h-20" src="/assets/tjena.webp" alt="Text 'Tjena!'" />
-				<p class="max-w-md font-typeWriter md:text-lg lg:max-w-xl">
+				<div class="max-w-md font-typeWriter md:text-lg lg:max-w-xl">
 					{@html renderRichText(blok.text)}
-				</p>
+				</div>
 			</div>
 		</div>
 	</div>

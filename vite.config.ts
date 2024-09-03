@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit(), basicSsl()],
 	server: {
-		https: true,
+		https: process.env.NODE_ENV === 'production',
 		proxy: {}
 	}
 });
