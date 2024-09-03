@@ -4,6 +4,8 @@
 
 	export let photo = true;
 	export let noCrown = false;
+	export let icloud = false;
+	let email = icloud ? 'sigfridwade@icloud.com' : 'hello@sigfredo.fun';
 </script>
 
 <div class="flex w-36 flex-col gap-6">
@@ -23,7 +25,7 @@
 		<div class="flex flex-col gap-2 text-primary">
 			<a href="https://github.com/youknowedo">@youknowedo</a>
 			<a href="https://www.linkedin.com/in/sigfridwade/">/in/sigfridwade</a>
-			<a href="mailto:hello@sigfredo.fun">hello@sigfredo.fun</a>
+			<a href="mailto:{email}">{email}</a>
 			<a href="sms:+46703048064">+46 (0)70 304 80 64</a>
 		</div>
 	</div>

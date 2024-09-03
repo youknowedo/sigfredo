@@ -105,7 +105,7 @@
 	<div>
 		<h4>
 			{#if lang === 'sv'}
-				Professionell erfarenhet
+				Arbetslivserfarenhet
 			{:else}
 				Professional experience
 			{/if}
@@ -117,7 +117,7 @@
 					<h5 class="font-bold">
 						{experience.title} <br />
 					</h5>
-					<h6 class="italic text-nowrap">
+					<h6 class="text-nowrap italic">
 						{experience.start}
 						{experience.end ? `- ${experience.end}` : ''}
 					</h6>
@@ -155,7 +155,7 @@
 						<h5 class="font-bold">
 							{education.degree} <br />
 						</h5>
-						<h6 class="italic text-nowrap">{education.start} - {education.end}</h6>
+						<h6 class="text-nowrap italic">{education.start} - {education.end}</h6>
 					</div>
 					<h6 class="font-bold">
 						{education.school} | {education.location}
@@ -201,6 +201,6 @@
 
 <style>
 	h4 {
-		@apply text-primary text-[1.25rem];
+		@apply text-[1.25rem] text-primary;
 	}
 </style>

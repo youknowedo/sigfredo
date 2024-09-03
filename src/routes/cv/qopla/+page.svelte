@@ -6,14 +6,6 @@
 <CV
 	experiences={[
 		{
-			title: 'Co-founder',
-			company: 'Booger UF',
-			location: 'Göteborg',
-			start: "sep '23",
-			end: "maj '24",
-			points: ['Ansvarig för skapandet av hemsidan & e-handelsplattformen']
-		},
-		{
 			title: 'Mjukvaruutvecklare Praktikant',
 			company: 'Shinner AB',
 			location: 'Malmö',
@@ -21,6 +13,7 @@
 			end: "dec '23",
 			points: [
 				'Jobbade både självständigt & kollaborativt med att skapa en ny användarupplevelse för en av deras primära användarflöden',
+				'Var drivande med att skapa en ny design för deras hemsida samt optimerade layouten för att öka konverteringsgraden',
 				'Erfarenhet av att använda React, React Native, NextJS, GraphQL, samt versionshantering i en företagsmiljö'
 			]
 		},
@@ -37,13 +30,13 @@
 			]
 		},
 		{
-			title: 'Baskettränare',
-			company: 'Ale Basket P09',
-			location: 'Alafors',
-			start: "jan '20",
-			end: "jun '23",
+			title: 'Basketdomare',
+			company: 'WBDF',
+			location: 'Göteborgsområdet',
+			start: "aug '19",
+			end: "jun '24",
 			points: [
-				'Tog laget från tredje högsta distriktsserien till distriktsfinal genom att teambuilding samt bra kommunikation med spelarna'
+				'Hantera och göra snabba, tuffa och svåra beslut i en under press som kan påverka matchens utgång och spelupplevelse'
 			]
 		}
 	]}
@@ -87,39 +80,40 @@
 
 <CL recipient="Sahir Ahmed" company="Qopla">
 	Hej Sahir!
+	<br />
+	Jag heter Filip Mårtensson och söker en praktikplats. Min pappa, Francis Mårtensson, rekommenderade
+	att jag skulle kontakta er. Han har berättat mycket positivt om er, och jag tycker personligen att
+	ni har ett intressant utbud av produkter.
 	<br /> <br />
-	Enligt de flesta av mina kamrater är alla praktikplatser inom mjukvaruutvecklingsbranschen likadana.
-	Dock har jag en annan uppfattning. De flesta tar därför det största företaget de kan hitta och blir
-	fast med en plats där de klockar in och jobbar på något alla vet aldrig kommer lämna datorn de utvecklar
-	på. Jag däremot, vill utvecklas, lära mig så mycket som möjligt, och skapa något som gör skillnad.
-	Därför söker jag en plats hos er på Qopla. Jag tror att faktumet att ni har ett såpass litet utvecklarteam
-	gör att jag kan få en bredare förståelse för hela utvecklingsprocessen och att jag kan vara med och
-	påverka produkten på ett sätt som jag inte hade kunnat göra på ett större företag. Dessutom har jag
-	under min frilanstid utvecklat webbplatser åt restauranger och jag tror att en praktikplats hos er
-	skulle ge mig en möjlighet att bädda in mig djupare i just den branschen.
+	Det har gått nästan 10 år sedan McDonald's började sin omfattande användning av självbetjäningskiosker,
+	och efter att själv ha känt på hur smidigt det är, tycker jag att det är underligt att inte fler restauranger
+	har börjat använda sig av liknande teknik. Jag tror att era produkter verkligen sticker ut på marknaden,
+	och även om min praktik bara är två månader, skulle det vara en ära att få vara en del av er resa.
 	<br /> <br />
-	Jag tror heller inte att det endast är jag som kan dra nytta av en praktikplats hos er. Under min tid
-	som frilansare använde jag ofta Elementor för att skapa webbplatser vilket jag såg att ni har gjort
-	på er hemsida. Dessutom såg jag på både Luke och Anastasiias LinkedIn-profiler att de använder React,
-	GraphQL, NoSQL (MongoDB) och Jest på eran arbetsplats vilket jag har erfarenhet av från min tid hos
-	Shinner AB. Där arbetade jag även med att ge input från ett tonårsperspektiv på användarupplevelsen
-	vilket jag tror kan vara till stor hjälp för er då jag kan ge er en insikt i hur er produkt uppfattas
-	av en yngre målgrupp.
+	Under min praktikperiod förra året hade jag förmånen att vara en av de få som fick en praktikplats
+	hos Shinner AB i Malmö, ett litet men dynamiskt startup-företag.
 	<br /> <br />
-	Under min praktikperiod förra året fick jag äran att vara en av de få som fått en praktikplats hos
-	Shinner AB i Malmö. De är ett litet startup-företag som hade begränsad tid och resurser för att utbilda
-	och guida mig vilket gjorde att de först var skeptiska till att ta in en mig som praktikant. Dock visade
-	jag snabbt mina tidigare kompetenser och erfarenheter som gjorde att de snabbt insåg att jag kunde
-	vara till stor hjälp för dem. Därefter fick kunde jag jobba både självständigt med användarflödet jag
-	blivit tilldelad att men också kollaborativt med resten av teamet för att säkerställa att jag förstod
-	deras kodstruktur, design- och arbetsmetoder.
+	Trots begränsad tid och resurser för att utbilda och vägleda nya praktikanter, valde de att ge mig
+	en chans. På kort tid kunde jag visa att mina färdigheter och tidigare erfarenheter verkligen var en
+	tillgång för företaget. Jag tog snabbt ansvar för det användarflöde jag tilldelats och arbetade både
+	självständigt och i nära samarbete med resten av teamet för att säkerställa att jag fullt ut förstod
+	deras kodstruktur, designprocesser och arbetsmetoder. När min tid hos dem var över, fick jag det stora
+	berömmet att vara en av de mest självgående praktikanterna de haft, och kunde arbeta nästintill helt
+	självständigt.
 	<br /> <br />
-	Jag välkomnar möjligheten att prata med er om du känner att jag skulle vara en passande som praktikant
+	Under min tid som frilansare använde jag ofta Elementor för att skapa webbplatser, något jag såg att
+	ni också har använt på er hemsida. Dessutom såg jag att ni använder React, GraphQL, NoSQL (MongoDB)
+	och Jest på er arbetsplats, vilket jag har erfarenhet av från min tid hos Shinner. Där arbetade jag
+	även med att ge input från ett tonårsperspektiv på användarupplevelsen, vilket jag tror kan vara till
+	hjälp för er då jag kan ge er en insikt i hur er produkt uppfattas av en yngre målgrupp.
+	<br /> <br />
+	Jag välkomnar möjligheten att prata med er om ni känner att jag skulle vara passande som praktikant
 	hos er. Jag är övertygad om att jag kan vara en tillgång för er och att jag kan lära mig mycket under
-	min tid hos er. Vill ni träffas fysiskt är jag tillgänglig för en intervju hos er i Stockholm september
-	12-13 då jag är där under en studieresa.
+	min tid hos er. Om ni önskar ett personligt möte, är jag tillgänglig för en intervju i Stockholm den
+	12-13 september, då jag är där under en studieresa.
 	<br /> <br />
-
+	Praktikperioden är från vecka 39-47.
+	<br /> <br />
 	Vänliga hälsningar,
 	<br />
 	Sigfrid Wade Filip Mårtensson
