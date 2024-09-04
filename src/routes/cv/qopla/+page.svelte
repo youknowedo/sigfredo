@@ -100,6 +100,10 @@
 	]}
 	skills={[
 		{
+			title: 'Intressen',
+			points: ['Teknik', 'Skateboard', 'Basket', 'Programmering']
+		},
+		{
 			title: 'Språk',
 			points: ['Svenska', 'Engelska (C1)', 'Tagalog (B1)', 'Spanska (A2)']
 		},
