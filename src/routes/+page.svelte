@@ -1,17 +1,12 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import Companies from '$lib/components/home/Companies.svelte';
+	import Footer from '$lib/components/home/Footer.svelte';
+	import Hero from '$lib/components/home/Hero.svelte';
+	import Portfolios from '$lib/components/home/Portfolios.svelte';
 	import { lang } from '$lib/stores';
-	import { Gif } from '@giphy/svelte-components';
-	import { StoryblokComponent, useStoryblokBridge } from '@storyblok/svelte';
-	import { onMount } from 'svelte';
-
-	export let data;
 
 	if (browser && !$lang) lang.set(navigator.language.startsWith('sv') ? 'sv' : 'en');
-
-	onMount(() => {
-		useStoryblokBridge(data.story.id, (newStory) => (data.story = newStory));
-	});
 </script>
 
 <svelte:head>
@@ -21,15 +16,13 @@
 <div class="pointer-events-none fixed z-20 h-screen w-screen bg-tex1 opacity-20"></div>
 
 <div class="">
-	{#if $lang == 'sv'}
-		<StoryblokComponent blok={data.storySwedish.content} />
-	{:else}
-		<StoryblokComponent blok={data.story.content} />
-	{/if}
+	<Hero />
 
-	<div class="my-20 flex justify-center px-8">
-		<Gif gif={data.gif} width={400} />
-	</div>
+	<Companies />
+
+	<Portfolios />
+
+	<Footer />
 </div>
 
 <style>
