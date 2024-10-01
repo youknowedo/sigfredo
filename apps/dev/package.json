@@ -35,10 +35,13 @@
   },
   "type": "module",
   "dependencies": {
-    "ui": "*",
     "@fontsource/lato": "^5.0.21",
+    "@fontsource/shrikhand": "^5.1.0",
     "@fontsource/special-elite": "^5.0.12",
     "@sveltejs/adapter-node": "^5.2.5",
-    "@vitejs/plugin-basic-ssl": "^1.1.0"
+    "@types/gsap": "^3.0.0",
+    "@vitejs/plugin-basic-ssl": "^1.1.0",
+    "gsap": "^3.12.5",
+    "ui": "*"
   }
 }
