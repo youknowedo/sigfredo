@@ -6,6 +6,7 @@
 	import '@fontsource/lato/700.css';
 	import '@fontsource/lato/900.css';
 	import '@fontsource/special-elite';
+	import { Layout } from 'ui';
 	import '../app.css';
 
 	export let data;
@@ -17,6 +18,8 @@
 	});
 </script>
 
-<div class="font-default">
-	<slot />
-</div>
+<Layout>
+	<div class="font-default">
+		<slot />
+	</div>
+</Layout>
