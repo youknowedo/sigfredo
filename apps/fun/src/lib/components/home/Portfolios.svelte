@@ -85,7 +85,7 @@
 							alt=""
 						/>
 						<div class="my-auto">
-							<img class="h-8" src="/assets/portfolios/dev-portfolio.webp" alt="" />
+							<img class="h-7" src="/assets/portfolios/dev-portfolio.webp" alt="" />
 						</div>
 					</div>
 				</a>
