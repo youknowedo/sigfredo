@@ -7,7 +7,7 @@
 	import '@fontsource/lato/900.css';
 	import '@fontsource/special-elite';
 	import { onMount } from 'svelte';
-	import { Layout } from 'ui';
+	import { Layout } from '@sigfredo/ui';
 	import '../app.css';
 
 	const getCookieValue = (name: string) => {
