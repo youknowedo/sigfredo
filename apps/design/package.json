@@ -1,5 +1,5 @@
 {
-	"name": "fun",
+	"name": "design",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -37,8 +37,6 @@
 	"dependencies": {
 		"@fontsource/lato": "^5.0.21",
 		"@fontsource/special-elite": "^5.0.12",
-		"@giphy/svelte-components": "^1.1.0",
-		"@sveltejs/adapter-vercel": "^5.4.1",
 		"@vitejs/plugin-basic-ssl": "^1.1.0"
 	}
 }
