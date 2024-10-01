@@ -7,6 +7,7 @@
 	import '@fontsource/lato/900.css';
 	import '@fontsource/special-elite';
 	import { onMount } from 'svelte';
+	import { Layout } from 'ui';
 	import '../app.css';
 
 	const getCookieValue = (name: string) => {
@@ -34,6 +35,8 @@
 	});
 </script>
 
-<div class="font-default">
-	<slot />
-</div>
+<Layout>
+	<div class="font-default">
+		<slot />
+	</div>
+</Layout>

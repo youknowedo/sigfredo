@@ -6,12 +6,29 @@
 	import '@fontsource/lato/700.css';
 	import '@fontsource/lato/900.css';
 	import '@fontsource/special-elite';
+	import { onMount } from 'svelte';
 	import { Layout } from 'ui';
 	import '../app.css';
 
-	export let data;
+	const getCookieValue = (name: string) => {
+		const regex = new RegExp(`(^| )${name}=([^;]+)`);
+		const match = document.cookie.match(regex);
+		if (match) {
+			return match[2];
+		}
+	};
 
-	lang.set(data.lang as any);
+	onMount(() => {
+		const cookieLang = getCookieValue('lang');
+
+		lang.set(
+			cookieLang === 'sv' || cookieLang == 'en'
+				? cookieLang
+				: browser && navigator.language.startsWith('sv')
+					? 'sv'
+					: 'en'
+		);
+	});
 
 	lang.subscribe((value) => {
 		if (browser) document.cookie = `lang=${value}; max-age=31536000; path=/`;
