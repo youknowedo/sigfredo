@@ -8,4 +8,4 @@
 	<title>Sigfredo | Dev</title>
 </svelte:head>
 
-<Header animate heading="Tjabbahallå!" subheading="developer - göteborg" />
+<Header heading="Tjabbahallå!" subheading="developer - göteborg" />

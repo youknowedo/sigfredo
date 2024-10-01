@@ -3,31 +3,5 @@
 @tailwind utilities;
 
 body {
-	background-color: rgba(255, 184, 3, 0.25);
-	margin: 0;
-	width: 100%;
-	overflow-x: hidden;
-	font-family: 'Chivo', sans-serif;
-
-	font-family: Arial, Helvetica, sans-serif;
-}
-
-p {
-	margin: 0;
-}
-
-h1,
-h2,
-h3,
-.shrikhand {
-	margin: 0;
-	font-family: 'Shrikhand', cursive;
-}
-
-.arial {
-	font-family: Arial, Helvetica, sans-serif;
-}
-
-h1 {
-	font-size: 4rem;
+	background-color: black;
 }

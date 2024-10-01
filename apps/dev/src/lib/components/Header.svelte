@@ -1,244 +1,164 @@
 <script lang="ts">
+	import { doLoadAnim } from '$lib/stores';
 	import gsap from 'gsap';
 	import { onMount } from 'svelte';
 
 	export let heading: string;
 	export let subheading: string;
 
-	export let animate = false;
-
-	let names: HTMLDivElement;
 	let innerWidth: number;
+	let scroll = 0;
 
-	if (animate)
-		onMount(() => {
-			gsap.to('#logoAnim>span', {
-				display: 'block',
-				duration: 2,
-				stagger: 0.15
-			});
-
-			gsap.to('#logoAnim', {
-				rotation: -7.77,
-				duration: 1,
-				delay: 2.5
-			});
-
-			gsap.to('nav', {
-				opacity: '100%',
-				delay: 3,
-				duration: 1,
-				ease: 'inOut'
-			});
-
-			gsap.to('#hero', {
-				flex: 1,
-				duration: 2,
-				delay: 4,
-				ease: 'inOut'
-			});
-
-			gsap.to('header', {
-				borderRadius: '0 0 2rem 2rem',
-				duration: 1,
-				delay: 4,
-				ease: 'inOut'
-			});
-
-			gsap.to('#logoAnim', {
-				display: 'none',
-				delay: 5
-			});
-
-			gsap.to('header', {
-				height: '35vh',
-				duration: 2.5,
-				delay: 5,
-
-				ease: 'inOut'
-			});
-
-			gsap.to('body', {
-				overflow: 'auto',
-				delay: 7
-			});
+	onMount(() => {
+		gsap.to('body', {
+			overflow: 'hidden'
 		});
+
+		gsap.to('#logoAnim>span', {
+			display: 'block',
+			duration: $doLoadAnim ? 2 : 0,
+			stagger: $doLoadAnim ? 0.15 : 0
+		});
+
+		gsap.to('#logoAnim', {
+			rotation: -7.77,
+			duration: $doLoadAnim ? 1 : 0,
+			delay: $doLoadAnim ? 2.5 : 0
+		});
+
+		gsap.to('header', {
+			opacity: '100%',
+			delay: $doLoadAnim ? 3 : 0,
+			duration: $doLoadAnim ? 1 : 0,
+			ease: 'inOut'
+		});
+
+		gsap.to('main', {
+			'--offset': '24rem',
+			flex: 1,
+			display: 'block',
+			duration: $doLoadAnim ? 2 : 0,
+			delay: $doLoadAnim ? 4 : 0,
+			ease: 'inOut'
+		});
+
+		gsap.to('#logoAnim', {
+			display: 'none',
+			delay: $doLoadAnim ? 5 : 0
+		});
+
+		gsap.to('body', {
+			overflow: 'auto',
+			delay: $doLoadAnim ? 7 : 0,
+			onComplete: () => {
+				doLoadAnim.set(false);
+			}
+		});
+	});
 </script>
 
 <svelte:window bind:innerWidth />
 
-<header class={animate ? 'animate' : ''}>
-	<span class="logo font-shrikhand" id="logoAnim">
-		<span> S </span>
-		<span> i </span>
-		<span> g </span>
-		<span> f </span>
-		<span> r </span>
-		<span> e </span>
-		<span> d </span>
-		<span> o </span>
+<div class="pointer-events-none fixed inset-0 flex items-center justify-center">
+	<span class="text-sd-yellow font-shrikhand flex text-7xl" id="logoAnim">
+		{#each 'Sigfredo' as l}<span class="hidden">{l}</span>{/each}
 	</span>
+</div>
 
-	<nav>
-		<a href="/" class="logo font-shrikhand">Sigfredo</a>
+<div class="flex h-screen flex-col justify-between">
+	<header class="container flex h-32 items-center justify-between py-8 opacity-0">
+		<a href="/" class="font-shrikhand text-sd-yellow text-3xl">Sigfredo</a>
 
-		<div>
-			<a href="./projects">
+		<nav class="text-lg font-bold uppercase text-white">
+			<a href="/projects">
 				Projects
 
 				<span class="hover"></span>
 			</a>
+		</nav>
+	</header>
+
+	<main
+		on:scroll={(e) => {
+			scroll = e.currentTarget.scrollTop;
+		}}
+		class="relative m-4 mt-0 hidden h-0 overflow-y-scroll rounded-2xl bg-white"
+	>
+		<div
+			id="hero"
+			class="bg-sd-yellow relative flex h-96 items-center justify-center overflow-hidden text-center"
+		>
+			<div
+				id="names"
+				class="pointer-events-none absolute -top-16 flex h-full w-full -rotate-6 flex-col items-center"
+			>
+				{#key innerWidth}
+					{#if innerWidth}
+						{#each Array(8).keys() as row}
+							<div
+								class="text-sd-orange font-shrikhand whitespace-nowrap text-7xl"
+								style="{row % 2 ? 'margin-left' : 'margin-right'}: calc(25% - {scroll +
+									row * 64}px + var(--offset));"
+							>
+								{#each Array(Math.ceil(innerWidth / 1000) + 2) as _}
+									<span>sigfrid wade filip mårtensson{' '}</span>
+								{/each}
+							</div>
+						{/each}
+					{/if}
+				{/key}
+			</div>
+
+			<div class="relative z-10">
+				<p class="font-shrikhand text-7xl">{heading}</p>
+				<h1 class="text-lg font-bold">{subheading}</h1>
+			</div>
 		</div>
-	</nav>
-	<div id="hero">
-		<div bind:this={names} id="names">
-			{#key names && innerWidth}
-				{#if names}
-					{#each Array(Math.ceil((animate ? window.innerHeight : names.clientHeight) / 64) + 1).keys() as row}
-						<div class={row % 2 ? 'left' : 'right'}>
-							{#each Array(Math.ceil(innerWidth / 1000) + 2) as _}
-								<span class="font-shrikhand">sigfrid wade filip mårtensson{' '}</span>
-							{/each}
-						</div>
+
+		<div class="bg-black">
+			{#if innerWidth}
+				<div class="font-shrikhand flex justify-start whitespace-nowrap py-4 text-5xl text-white">
+					{#each Array(Math.ceil(innerWidth / 1000) * 2) as _}
+						<span class="item px-2">some really cool text</span>
 					{/each}
-				{/if}
-			{/key}
+				</div>
+			{/if}
 		</div>
-		<h1>
-			<span>{heading}</span>
-		</h1>
-		<p>{subheading}</p>
-	</div>
-</header>
+	</main>
+</div>
 
 <style>
-	:global(body):has(header.animate) {
-		overflow: hidden;
+	main {
+		scrollbar-width: none; /* Firefox */
 	}
 
-	header {
-		background-color: black;
-		display: flex;
-		justify-content: space-between;
-		flex-direction: column;
-		border-radius: 0 0 2rem 2rem;
-		overflow: hidden;
-		height: 35vh;
-		min-height: 400px;
-	}
-	header.animate {
-		height: 100vh;
-		border-radius: 0;
+	main::-webkit-scrollbar {
+		display: none; /* Safari and Chrome */
 	}
 
-	#logoAnim {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: 5rem;
-		color: #ffb703;
-		margin: 1rem;
-		padding: 1rem;
-		z-index: 0;
-	}
-	#logoAnim > span {
-		display: none;
+	@keyframes slide {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-100%);
+		}
 	}
 
-	nav {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 1rem 2rem;
-	}
-	header.animate nav {
-		opacity: 0;
-	}
-	nav a {
-		color: white;
-		text-decoration: none;
-	}
-	nav a:not(.logo) {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-
-		color: rgba(255, 255, 255, 0.8);
-		font-weight: bold;
-		text-transform: uppercase;
-		transition-duration: 200ms;
-	}
-	nav a:not(.logo):hover {
-		color: white;
-	}
-	nav a:not(.logo) .hover {
-		position: absolute;
-		right: 0;
-		left: auto;
-		bottom: -4px;
-		width: 0;
-		transition-duration: 400ms;
-
-		border-bottom: 2px #ffb703 solid;
-	}
-	nav a:not(.logo):hover .hover {
-		position: absolute;
-		right: auto;
-		left: 0;
-		bottom: -4px;
-		width: 100%;
-
-		border-bottom: 2px #ffb703 solid;
-	}
-	.logo {
-		font-size: 2rem;
-		color: #ffb703;
+	.item {
+		animation: slide 10s linear infinite;
+		display: block;
 	}
 
-	#hero {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		background-color: #ffb703;
-		margin: 1rem;
-		margin-top: 0;
-		border-radius: 2rem;
-		z-index: 1;
-		flex: 1;
-		overflow: hidden;
-	}
-	header.animate #hero {
-		flex: 0;
-		height: 0;
+	a:has(.hover) {
+		@apply relative;
 	}
 
-	#names {
-		color: #ffa903;
-		position: absolute;
-		font-size: 4rem;
-		white-space: nowrap;
-		rotate: -7.77deg;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		line-height: 110%;
-		z-index: -1;
+	a .hover {
+		@apply border-sd-yellow absolute -bottom-2 left-auto right-0 w-0 border-b-4 border-solid duration-300;
 	}
-	#names > div {
-		position: relative;
-	}
-	#names .right {
-		right: 25%;
-	}
-	#names .left {
-		left: 25%;
+
+	a:hover .hover {
+		@apply left-0 right-auto w-full;
 	}
 </style>

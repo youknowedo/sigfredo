@@ -14,6 +14,10 @@ const config = {
 			}
 		},
 		extend: {
+			colors: {
+				'sd-yellow': '#ffb703',
+				'sd-orange': '#ffa903'
+			},
 			fontFamily: {
 				typeWriter: ['"Special Elite"', 'monospace'],
 				shrikhand: ['Shrikhand', 'cursive'],
