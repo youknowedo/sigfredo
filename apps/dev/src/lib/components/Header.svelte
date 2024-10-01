@@ -60,14 +60,14 @@
 <svelte:window bind:innerWidth />
 
 <div class="pointer-events-none fixed inset-0 flex items-center justify-center">
-	<span class="text-sd-yellow font-shrikhand flex text-7xl" id="logoAnim">
+	<span class="flex font-shrikhand text-7xl text-sd-yellow" id="logoAnim">
 		{#each 'Sigfredo' as l}<span class="hidden">{l}</span>{/each}
 	</span>
 </div>
 
 <div class="flex h-screen flex-col justify-between">
 	<header class="container flex h-32 items-center justify-between py-8 opacity-0">
-		<a href="/" class="font-shrikhand text-sd-yellow text-3xl">Sigfredo</a>
+		<a href="/" class="font-shrikhand text-3xl text-sd-yellow">Sigfredo</a>
 
 		<nav class="text-lg font-bold uppercase text-white">
 			<a href="/projects">
@@ -86,7 +86,7 @@
 	>
 		<div
 			id="hero"
-			class="bg-sd-yellow relative flex h-96 items-center justify-center overflow-hidden text-center"
+			class="relative flex h-96 items-center justify-center overflow-hidden bg-sd-yellow text-center"
 		>
 			<div
 				id="names"
@@ -96,7 +96,7 @@
 					{#if innerWidth}
 						{#each Array(8).keys() as row}
 							<div
-								class="text-sd-orange font-shrikhand whitespace-nowrap text-7xl"
+								class="whitespace-nowrap font-shrikhand text-7xl text-sd-orange"
 								style="{row % 2 ? 'margin-left' : 'margin-right'}: calc(25% - {scroll +
 									row * 64}px + var(--offset));"
 							>
@@ -117,8 +117,8 @@
 
 		<div class="bg-black">
 			{#if innerWidth}
-				<div class="font-shrikhand flex justify-start whitespace-nowrap py-4 text-5xl text-white">
-					{#each Array(Math.ceil(innerWidth / 1000) * 2) as _}
+				<div class="flex justify-start whitespace-nowrap py-4 font-shrikhand text-5xl text-white">
+					{#each Array(Math.ceil(innerWidth / 1000) * 3) as _}
 						<span class="item px-2">some really cool text</span>
 					{/each}
 				</div>
@@ -155,7 +155,7 @@
 	}
 
 	a .hover {
-		@apply border-sd-yellow absolute -bottom-2 left-auto right-0 w-0 border-b-4 border-solid duration-300;
+		@apply absolute -bottom-2 left-auto right-0 w-0 border-b-4 border-solid border-sd-yellow duration-300;
 	}
 
 	a:hover .hover {
