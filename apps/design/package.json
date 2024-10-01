@@ -38,6 +38,7 @@
     "@fontsource/lato": "^5.0.21",
     "@fontsource/special-elite": "^5.0.12",
     "@sveltejs/adapter-node": "^5.2.5",
+    "@sveltejs/adapter-static": "^3.0.5",
     "@vitejs/plugin-basic-ssl": "^1.1.0"
   }
 }

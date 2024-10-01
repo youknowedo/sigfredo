@@ -39,6 +39,7 @@
     "@fontsource/special-elite": "^5.0.12",
     "@giphy/svelte-components": "^1.1.0",
     "@sveltejs/adapter-node": "^5.2.5",
+    "@sveltejs/adapter-static": "^3.0.5",
     "@vitejs/plugin-basic-ssl": "^1.1.0"
   }
 }
