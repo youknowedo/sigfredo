@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { lang } from '$lib/stores';
-	import '@fontsource/lato/400-italic.css';
-	import '@fontsource/lato/400.css';
-	import '@fontsource/lato/700.css';
-	import '@fontsource/lato/900.css';
+	import '@fontsource/shrikhand';
 	import '@fontsource/special-elite';
 	import { onMount } from 'svelte';
 	import { Layout } from '@sigfredo/ui';
