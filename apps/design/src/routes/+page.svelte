@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import Header from '$lib/components/Header.svelte';
 	import { lang } from '$lib/stores';
 </script>
 
@@ -7,4 +8,4 @@
 	<title>Sigfredo | Design</title>
 </svelte:head>
 
-<div class="flex h-screen w-screen items-center justify-center text-center">Under construction</div>
+<Header heading="Tjabbahallå!" subheading="developer - göteborg" />
